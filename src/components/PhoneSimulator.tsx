@@ -197,15 +197,15 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">姓名 Name</label>
-                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的姓名 Your name" />
+                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的姓名 Your name" />
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company</label>
-                      <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
+                      <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">您对接的事业部 Business Unit</label>
-                      <select value={businessUnit || ""} onChange={(e) => setBusinessUnit(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow">
+                      <select value={businessUnit || ""} onChange={(e) => setBusinessUnit(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow">
                         <option value="" disabled>请选择 Please select</option>
                         {BU_OPTIONS.map(bu => <option key={bu} value={bu}>{bu}</option>)}
                       </select>
