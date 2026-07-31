@@ -1,4 +1,5 @@
 import type { Connect, Plugin } from 'vite';
+import type { ServerResponse } from 'node:http';
 import {
   addSubmission,
   deleteSubmission,
@@ -15,7 +16,7 @@ function readBody(req: Connect.IncomingMessage): Promise<string> {
   });
 }
 
-function sendJson(res: Connect.ServerResponse, status: number, body: unknown) {
+function sendJson(res: ServerResponse, status: number, body: unknown) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
@@ -24,7 +25,7 @@ function sendJson(res: Connect.ServerResponse, status: number, body: unknown) {
 
 async function handleApi(
   req: Connect.IncomingMessage,
-  res: Connect.ServerResponse
+  res: ServerResponse
 ): Promise<boolean> {
   const url = new URL(req.url || '/', 'http://localhost');
   if (!url.pathname.startsWith('/api/')) return false;

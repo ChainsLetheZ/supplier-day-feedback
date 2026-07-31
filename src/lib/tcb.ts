@@ -186,6 +186,7 @@ function fromDoc(row: Record<string, unknown>): FeedbackSubmission {
   return {
     id,
     name: String(row.name || ''),
+    email: String(row.email || ''),
     company: String(row.company || ''),
     businessUnit: String(row.businessUnit || 'Other'),
     q1Rating: Number(row.q1Rating || 0),
@@ -213,6 +214,7 @@ function toDoc(submission: Omit<FeedbackSubmission, 'id'> & { id?: string }) {
   // CloudBase 文档字段：避免传入客户端临时 id
   return {
     name: submission.name,
+    email: submission.email,
     company: submission.company,
     businessUnit: submission.businessUnit,
     q1Rating: Number(submission.q1Rating) || 0,

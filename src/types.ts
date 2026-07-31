@@ -9,6 +9,7 @@ export interface Q3Matrix {
 export interface FeedbackSubmission {
   id?: string;
   name: string;
+  email: string;
   company: string;
   businessUnit: string;
   q1Rating: number;
@@ -139,12 +140,12 @@ export const Q3_OPTIONS = [
 ];
 
 export const BU_OPTIONS = [
-  'CC (Cross-Domain Computing Solutions)',
-  'XC (Cross-Domain Computing Solutions)',
-  'PS (Powertrain Solutions)',
-  'ED (Electrical Drives)',
-  'AE (Automotive Electronics)',
-  'Other'
+  'PT',
+  'MAC',
+  'BBM',
+  'iBuy',
+  'MA',
+  'Others'
 ];
 
 export const Q2_Q4_OPTIONS = [

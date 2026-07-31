@@ -60,6 +60,21 @@ export function upsertMirrorSubmission(submission: FeedbackSubmission) {
   return trimmed;
 }
 
+export function updateMirrorSubmission(
+  id: string,
+  patch: Partial<FeedbackSubmission>
+) {
+  const list = loadMirrorSubmissions().map((item) =>
+    item.id === id ? { ...item, ...patch, id } : item
+  );
+  localStorage.setItem(MIRROR_KEY, JSON.stringify(list));
+}
+
+export function removeMirrorSubmission(id: string) {
+  const list = loadMirrorSubmissions().filter((item) => item.id !== id);
+  localStorage.setItem(MIRROR_KEY, JSON.stringify(list));
+}
+
 export function mergeSubmissions(
   remote: FeedbackSubmission[],
   local: FeedbackSubmission[]

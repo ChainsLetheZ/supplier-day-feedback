@@ -7,6 +7,19 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/*
+ * iOS Safari automatically zooms the page when a form control with text
+ * smaller than 16px receives focus. Keep mobile form controls at 16px so
+ * fill-in questions do not enlarge the viewport and push content off-screen.
+ */
+@media (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 /* Custom animation gradients or effects */
 @keyframes pulseGlow {
   0%, 100% {
@@ -36,4 +49,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.5);
 }
-

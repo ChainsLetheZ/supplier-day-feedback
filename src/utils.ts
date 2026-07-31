@@ -46,6 +46,7 @@ export function createSingleMockSubmission(id?: string): FeedbackSubmission {
   return {
     id: id || `mock-${Math.random().toString(36).substr(2, 9)}`,
     name,
+    email: `${name.replace(/\s+/g, '.').toLowerCase()}@example.com`,
     company,
     businessUnit,
     q1Rating,

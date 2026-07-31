@@ -21,8 +21,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     loadMySubmission() ? 7 : 1
   );
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [businessUnit, setBusinessUnit] = useState('');
+  const [otherBusinessUnit, setOtherBusinessUnit] = useState('');
   
   const [localSubmission, setLocalSubmission] = useState<FeedbackSubmission | null>(() =>
     loadMySubmission()
@@ -62,12 +64,21 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
       fallbackName = `${fn} ${ln}`;
     }
     setName(fallbackName);
+    setEmail(`${fallbackName.replace(/\s+/g, '.').toLowerCase()}@example.com`);
     setCompany(MOCK_COMPANIES[Math.floor(Math.random() * MOCK_COMPANIES.length)]);
     setBusinessUnit(BU_OPTIONS[Math.floor(Math.random() * BU_OPTIONS.length)]);
   };
 
   const handleNextStep = () => {
-    if (step === 1 && (!name.trim() || !company.trim() || !businessUnit)) return;
+    if (
+      step === 1 &&
+      (!name.trim() ||
+        !email.trim() ||
+        !email.includes('@') ||
+        !company.trim() ||
+        !businessUnit ||
+        (businessUnit === 'Others' && !otherBusinessUnit.trim()))
+    ) return;
     if (step === 2 && (q1Rating === 0 || q2Helpful === null)) return;
     
     if (step < 6) { setStep((step + 1) as any); }
@@ -94,21 +105,16 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     // Stay on waiting screen — do NOT jump back to step 1
     setStep(6);
 
-    // Persona is computed locally (no Gemini / VPN needed)
-    const persona =
-      q2Helpful === 'A'
-        ? 'INNOVATOR'
-        : q2Helpful === 'B'
-          ? 'NAVIGATOR'
-          : q2Helpful === 'C'
-            ? 'ACCELERATOR'
-            : 'CONNECTOR';
+    // Provisional random result. The storage layer applies the final 50-person cap.
+    const personas: PersonaType[] = ['INNOVATOR', 'NAVIGATOR', 'ACCELERATOR', 'CONNECTOR'];
+    const persona = personas[Math.floor(Math.random() * personas.length)];
 
     const submission: FeedbackSubmission = {
       id: `attendee-${Date.now()}`,
       name: name.trim() || '匿名的供应商伙伴',
+      email: email.trim(),
       company: company.trim() || '科技产业伙伴',
-      businessUnit,
+      businessUnit: businessUnit === 'Others' ? otherBusinessUnit.trim() : businessUnit,
       q1Rating,
       q2Helpful: q2Helpful || 'A',
       q3Matrix,
@@ -142,8 +148,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
 
   const startNewSurvey = () => {
     setName('');
+    setEmail('');
     setCompany('');
     setBusinessUnit('');
+    setOtherBusinessUnit('');
     setQ1Rating(0);
     setQ2Helpful(null);
     setQ3Matrix({
@@ -197,18 +205,31 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">姓名 Name</label>
-                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的姓名 Your name" />
+                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的姓名 Your name" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">邮箱 Email</label>
+                      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的邮箱 Your email" />
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company</label>
-                      <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
+                      <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">您对接的事业部 Business Unit</label>
-                      <select value={businessUnit || ""} onChange={(e) => setBusinessUnit(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow">
+                      <select value={businessUnit || ""} onChange={(e) => setBusinessUnit(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow">
                         <option value="" disabled>请选择 Please select</option>
                         {BU_OPTIONS.map(bu => <option key={bu} value={bu}>{bu}</option>)}
                       </select>
+                      {businessUnit === 'Others' && (
+                        <input
+                          type="text"
+                          value={otherBusinessUnit}
+                          onChange={(e) => setOtherBusinessUnit(e.target.value)}
+                          className="w-full mt-2 px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow"
+                          placeholder="请输入事业部 Please specify"
+                        />
+                      )}
                     </div>
                   </div>
                 </motion.div>

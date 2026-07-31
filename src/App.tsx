@@ -13,6 +13,8 @@ import {
   clearMySubmission,
   loadMirrorSubmissions,
   upsertMirrorSubmission,
+  updateMirrorSubmission,
+  removeMirrorSubmission,
   mergeSubmissions,
 } from './lib/localStore';
 
@@ -150,7 +152,25 @@ function DashboardRoute() {
     return () => unsub();
   }, []);
 
-  return <BigScreenDashboard submissions={submissions} />;
+  const handleHideLocal = (id: string) => {
+    updateMirrorSubmission(id, { isHidden: true });
+    setSubmissions((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, isHidden: true } : item))
+    );
+  };
+
+  const handleDeleteLocal = (id: string) => {
+    removeMirrorSubmission(id);
+    setSubmissions((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  return (
+    <BigScreenDashboard
+      submissions={submissions}
+      onHidden={handleHideLocal}
+      onDeleted={handleDeleteLocal}
+    />
+  );
 }
 
 export default function App() {

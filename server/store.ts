@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 export type StoredSubmission = {
   id?: string;
   name: string;
+  email: string;
   company: string;
   businessUnit: string;
   q1Rating: number;

@@ -10,9 +10,15 @@ import { destroySubmission, hideSubmission } from '../lib/dataService';
 
 interface BigScreenDashboardProps {
   submissions: FeedbackSubmission[];
+  onHidden: (id: string) => void;
+  onDeleted: (id: string) => void;
 }
 
-export default function BigScreenDashboard({ submissions }: BigScreenDashboardProps) {
+export default function BigScreenDashboard({
+  submissions,
+  onHidden,
+  onDeleted,
+}: BigScreenDashboardProps) {
   const [filterPersona, setFilterPersona] = useState<string>('ALL');
   const [searchTerm, setSearchTerm] = useState<string>('');
   
@@ -40,8 +46,10 @@ export default function BigScreenDashboard({ submissions }: BigScreenDashboardPr
     if (!id) return;
     try {
       await hideSubmission(id, true);
+      onHidden(id);
     } catch (e) {
-      alert("隐藏失败，请检查网络或腾讯云 CloudBase 配置");
+      console.error(e);
+      alert(`隐藏失败：${e instanceof Error ? e.message : '请检查网络或腾讯云 CloudBase 配置'}`);
     }
   };
 
@@ -50,9 +58,10 @@ export default function BigScreenDashboard({ submissions }: BigScreenDashboardPr
     if (window.confirm("确定要永久删除这条数据吗？")) {
       try {
         await destroySubmission(id);
+        onDeleted(id);
       } catch (e) {
         console.error(e);
-        alert("删除失败，请检查网络或腾讯云 CloudBase 配置");
+        alert(`删除失败：${e instanceof Error ? e.message : '请检查网络或腾讯云 CloudBase 配置'}`);
       }
     }
   };
@@ -527,6 +536,11 @@ export default function BigScreenDashboard({ submissions }: BigScreenDashboardPr
                             </span></span>
                             <span>BU: {sub.businessUnit}</span>
                           </div>
+                          {sub.email && (
+                            <p className="text-[11px] text-slate-500 mb-1">
+                              Email: {sub.email}
+                            </p>
+                          )}
                           <p className="text-[11px] text-slate-500">
                             Expectations: {sub.q5Expectations.join(', ')}
                           </p>

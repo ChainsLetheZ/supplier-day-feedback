@@ -1,4 +1,4 @@
-import { FeedbackSubmission } from '../types';
+import { FeedbackSubmission, PersonaType } from '../types';
 import {
   fetchSubmissions as apiFetch,
   postSubmission as apiPost,
@@ -38,8 +38,23 @@ export function getPreferredMode(): StorageMode {
 export async function saveSubmission(
   submission: Omit<FeedbackSubmission, 'id'> & { id?: string }
 ): Promise<FeedbackSubmission> {
-  if (isTcbConfigured()) return tcbPostSubmission(submission);
-  return apiPost(submission);
+  const existing = await listSubmissions().catch(() => []);
+  const personas: PersonaType[] = [
+    'INNOVATOR',
+    'NAVIGATOR',
+    'ACCELERATOR',
+    'CONNECTOR',
+  ];
+  const available = personas.filter(
+    (persona) => existing.filter((item) => item.persona === persona).length < 50
+  );
+  if (available.length === 0) {
+    throw new Error('四种角色均已达到 50 人上限');
+  }
+  const persona = available[Math.floor(Math.random() * available.length)];
+  const finalized = { ...submission, persona };
+  if (isTcbConfigured()) return tcbPostSubmission(finalized);
+  return apiPost(finalized);
 }
 
 export async function listSubmissions(): Promise<FeedbackSubmission[]> {
