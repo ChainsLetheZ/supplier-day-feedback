@@ -5,7 +5,7 @@ import {
   Notebook, Presentation, Store, RefreshCw, Compass, Zap, Star
 } from 'lucide-react';
 import { 
-  FeedbackSubmission, PersonaType, PERSONA_DETAILS, Q5_OPTIONS, BU_OPTIONS, Q2_Q4_OPTIONS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES 
+  FeedbackSubmission, PersonaType, PERSONA_DETAILS, Q5_OPTIONS, BU_OPTIONS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES
 } from '../types';
 import { loadMySubmission } from '../lib/localStore';
 
@@ -14,6 +14,10 @@ interface PhoneSimulatorProps {
   lastSubmission: FeedbackSubmission | null;
   onResetDemo: () => void;
 }
+
+type BasicInfoErrors = Partial<
+  Record<'name' | 'email' | 'company' | 'businessUnit' | 'otherBusinessUnit', string>
+>;
 
 export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onResetDemo }: PhoneSimulatorProps) {
   // Sync restore from localStorage so refresh keeps the ticket (no flash back to Q1)
@@ -25,15 +29,16 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const [company, setCompany] = useState('');
   const [businessUnit, setBusinessUnit] = useState('');
   const [otherBusinessUnit, setOtherBusinessUnit] = useState('');
+  const [basicInfoErrors, setBasicInfoErrors] = useState<BasicInfoErrors>({});
   
   const [localSubmission, setLocalSubmission] = useState<FeedbackSubmission | null>(() =>
     loadMySubmission()
   );
   
   const [q1Rating, setQ1Rating] = useState<number>(0);
-  const [q2Helpful, setQ2Helpful] = useState<string | null>(null);
+  const [q2Rating, setQ2Rating] = useState(0);
   const [q3Matrix, setQ3Matrix] = useState({
-    themeSpeech: 0, buStrategy: 0, relevance: 0, exhibition: 0, networking: 0
+    keynoteSpeech: 0, panelDiscussion: 0, marketplace: 0, awardingCeremony: 0, supplierMeeting: 0
   });
   const [q4Favorite, setQ4Favorite] = useState<string | null>(null);
   const [q5Expectations, setQ5Expectations] = useState<string[]>([]);
@@ -70,16 +75,28 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   };
 
   const handleNextStep = () => {
-    if (
-      step === 1 &&
-      (!name.trim() ||
-        !email.trim() ||
-        !email.includes('@') ||
-        !company.trim() ||
-        !businessUnit ||
-        (businessUnit === 'Others' && !otherBusinessUnit.trim()))
-    ) return;
-    if (step === 2 && (q1Rating === 0 || q2Helpful === null)) return;
+    if (step === 1) {
+      const errors: BasicInfoErrors = {};
+      const normalizedEmail = email.trim();
+      if (!name.trim()) errors.name = '请输入姓名 Please enter your name';
+      if (!normalizedEmail) {
+        errors.email = '请输入邮箱 Please enter your email';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+        errors.email = '邮箱格式不正确 Please enter a valid email address';
+      }
+      if (!company.trim()) errors.company = '请输入公司名称 Please enter your company';
+      if (!businessUnit) errors.businessUnit = '请选择事业部 Please select a business unit';
+      if (businessUnit === 'Others' && !otherBusinessUnit.trim()) {
+        errors.otherBusinessUnit = '请输入事业部名称 Please specify your business unit';
+      }
+      setBasicInfoErrors(errors);
+      const firstInvalidField = Object.keys(errors)[0];
+      if (firstInvalidField) {
+        document.getElementById(`basic-${firstInvalidField}`)?.focus();
+        return;
+      }
+    }
+    if (step === 2 && (q1Rating === 0 || q2Rating === 0)) return;
     
     if (step < 6) { setStep((step + 1) as any); }
   };
@@ -100,7 +117,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   };
 
   const handleSubmit = async () => {
-    if (q2Helpful === null || submitting) return;
+    if (q2Rating === 0 || submitting) return;
     setSubmitting(true);
     // Stay on waiting screen — do NOT jump back to step 1
     setStep(6);
@@ -116,9 +133,9 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
       company: company.trim() || '科技产业伙伴',
       businessUnit: businessUnit === 'Others' ? otherBusinessUnit.trim() : businessUnit,
       q1Rating,
-      q2Helpful: q2Helpful || 'A',
+      q2Rating,
       q3Matrix,
-      q4Favorite: q2Helpful || 'A',
+      q4Favorite: '',
       q5Expectations,
       q5OtherText,
       q6Suggestions,
@@ -152,14 +169,15 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     setCompany('');
     setBusinessUnit('');
     setOtherBusinessUnit('');
+    setBasicInfoErrors({});
     setQ1Rating(0);
-    setQ2Helpful(null);
+    setQ2Rating(0);
     setQ3Matrix({
-      themeSpeech: 0,
-      buStrategy: 0,
-      relevance: 0,
-      exhibition: 0,
-      networking: 0,
+      keynoteSpeech: 0,
+      panelDiscussion: 0,
+      marketplace: 0,
+      awardingCeremony: 0,
+      supplierMeeting: 0,
     });
     setQ4Favorite(null);
     setQ5Expectations([]);
@@ -205,31 +223,38 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">姓名 Name</label>
-                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的姓名 Your name" />
+                      <input id="basic-name" type="text" value={name} onChange={(e) => { setName(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, name: undefined })); }} aria-invalid={!!basicInfoErrors.name} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.name ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的姓名 Your name" />
+                      {basicInfoErrors.name && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.name}</p>}
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">邮箱 Email</label>
-                      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的邮箱 Your email" />
+                      <input id="basic-email" type="email" inputMode="email" autoCapitalize="none" value={email} onChange={(e) => { setEmail(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, email: undefined })); }} aria-invalid={!!basicInfoErrors.email} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的邮箱 Your email" />
+                      {basicInfoErrors.email && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.email}</p>}
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company</label>
-                      <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
+                      <input id="basic-company" type="text" value={company} onChange={(e) => { setCompany(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, company: undefined })); }} aria-invalid={!!basicInfoErrors.company} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.company ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的公司名称 Your company" />
+                      {basicInfoErrors.company && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.company}</p>}
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">您对接的事业部 Business Unit</label>
-                      <select value={businessUnit || ""} onChange={(e) => setBusinessUnit(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">您归属的事业部 Business Unit</label>
+                      <select id="basic-businessUnit" value={businessUnit || ""} onChange={(e) => { setBusinessUnit(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, businessUnit: undefined, otherBusinessUnit: undefined })); }} aria-invalid={!!basicInfoErrors.businessUnit} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.businessUnit ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`}>
                         <option value="" disabled>请选择 Please select</option>
                         {BU_OPTIONS.map(bu => <option key={bu} value={bu}>{bu}</option>)}
                       </select>
+                      {basicInfoErrors.businessUnit && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.businessUnit}</p>}
                       {businessUnit === 'Others' && (
                         <input
+                          id="basic-otherBusinessUnit"
                           type="text"
                           value={otherBusinessUnit}
-                          onChange={(e) => setOtherBusinessUnit(e.target.value)}
-                          className="w-full mt-2 px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow"
+                          onChange={(e) => { setOtherBusinessUnit(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, otherBusinessUnit: undefined })); }}
+                          aria-invalid={!!basicInfoErrors.otherBusinessUnit}
+                          className={`w-full mt-2 px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.otherBusinessUnit ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`}
                           placeholder="请输入事业部 Please specify"
                         />
                       )}
+                      {basicInfoErrors.otherBusinessUnit && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.otherBusinessUnit}</p>}
                     </div>
                   </div>
                 </motion.div>
@@ -239,11 +264,11 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
               {step === 2 && (
                 <motion.div key="step-2" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
                   <div className="mb-6">
-                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">大会体验反馈 Event Feedback</h2>
+                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">大会体验评分 Event Ratings</h2>
                   </div>
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-[13px] font-bold text-slate-800 mb-3">1. 请您为本次供应商大会整体安排打分<br/>Please rate the overall arrangement of this Supplier Day</label>
+                      <label className="block text-[13px] font-bold text-slate-800 mb-3">1. 请您为本次供应商大会整体安排打分<br/>Please rate the overall arrangement (5-star rating)</label>
                       <div className="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
                         
                         {[1, 2, 3, 4, 5].map((score) => (
@@ -259,17 +284,16 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       </div>
                     </div>
                     <div>
-                      <label className="block text-[13px] font-bold text-slate-800 mb-3">2. 哪个环节对您的业务最有帮助？<br/>Which session was most helpful?</label>
-                      <div className="space-y-2">
-                        {Q2_Q4_OPTIONS.map(opt => (
-                          <button key={opt.key} onClick={() => setQ2Helpful(opt.key)} className={`w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between ${q2Helpful === opt.key ? 'bg-indigo-50 border-indigo-400 text-indigo-700 shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300'}`}>
-                            <div className="flex flex-col">
-                              <span>{opt.labelZh}</span>
-                              <span className="text-[10px] opacity-70 mt-0.5">{opt.labelEn}</span>
-                            </div>
-                            <div className={`w-5 h-5 rounded-full flex items-center justify-center border-2 transition-colors ${q2Helpful === opt.key ? 'border-indigo-600 bg-indigo-600' : 'border-slate-300'}`}>
-                              {q2Helpful === opt.key && <div className="w-2 h-2 rounded-full bg-white" />}
-                            </div>
+                      <label className="block text-[13px] font-bold text-slate-800 mb-3">2. 请您为本次供应商大会内容有用程度打分<br/>Please rate the usefulness of the content (5-star rating)</label>
+                      <div className="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                        {[1, 2, 3, 4, 5].map((score) => (
+                          <button
+                            key={score}
+                            onClick={() => setQ2Rating(score)}
+                            className={`flex flex-col items-center gap-1.5 focus:outline-none transition-transform hover:scale-110 p-2 ${q2Rating >= score ? 'opacity-100' : 'opacity-40 grayscale'}`}
+                          >
+                            <Star className={`w-8 h-8 transition-colors ${q2Rating >= score ? 'fill-amber-400 text-amber-400 drop-shadow-sm' : 'fill-slate-100 text-slate-300 hover:text-amber-200'}`} />
+                            <span className="text-[10px] font-bold font-mono">{score}</span>
                           </button>
                         ))}
                       </div>
@@ -282,15 +306,16 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
               {step === 3 && (
                 <motion.div key="step-3" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
                   <div className="mb-4">
-                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">维度满意度 Dimension Satisfaction (1-5)</h2>
+                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">3. 活动维度体验满意度</h2>
+                    <p className="text-xs text-slate-500">矩阵题，1–5 分（1 = 低，5 = 高）</p>
                   </div>
                   <div className="space-y-4">
                     {[
-                      { key: 'themeSpeech', label: '大会主题演讲 Keynote Speech' },
-                      { key: 'buStrategy', label: '各事业部采购战略目标及期望 BU Strategy & Expectations' },
-                      { key: 'relevance', label: '大会整体内容与贵司业务相关 Relevance to your business' },
-                      { key: 'exhibition', label: '展区内容吸引力 Exhibition attractiveness' },
-                      { key: 'networking', label: '交流及 Networking 机会 Networking opportunities' }
+                      { key: 'keynoteSpeech', label: 'Keynote Speech' },
+                      { key: 'panelDiscussion', label: 'Panel Discussion' },
+                      { key: 'marketplace', label: 'Marketplace' },
+                      { key: 'awardingCeremony', label: 'Awarding ceremony' },
+                      { key: 'supplierMeeting', label: 'GB Individual Supplier Meeting' }
                     ].map((item) => (
                       <div key={item.key} className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
                         <label className="block text-[11px] font-bold text-slate-800 mb-2">{item.label}</label>
@@ -323,7 +348,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   <div className="space-y-5 flex-1 flex flex-col">
                     <div className="flex-1 flex flex-col">
                       <div className="flex justify-between items-end mb-1">
-                        <label className="block text-[12px] font-bold text-slate-800">4. 明年希望增加哪些内容？<br/>What would you like to see more next year?</label>
+                        <label className="block text-[12px] font-bold text-slate-800">4. 您希望明年的供应商大会增加哪些内容？<br/>What would you like to see more next year?</label>
                         <span className="text-[10px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full shrink-0">最多3项 Max 3</span>
                       </div>
                       <p className="text-[10px] text-slate-500 mb-3 animate-pulse font-bold text-center">👇 请上下滑动查看全部选项 Please scroll to see all options 👇</p>
@@ -529,7 +554,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                 {step < 5 ? (
                   <button 
                     onClick={handleNextStep}
-                    disabled={(step === 1 && (!name.trim() || !company.trim() || !businessUnit)) || (step === 2 && (q1Rating === 0 || q2Helpful === null)) || (step === 3 && Object.values(q3Matrix).some(v => v === 0)) || (step === 4 && (q5Expectations.length === 0 || (q5Expectations.includes('I') && !q5OtherText.trim())))}
+                    disabled={(step === 2 && (q1Rating === 0 || q2Rating === 0)) || (step === 3 && Object.values(q3Matrix).some(v => v === 0)) || (step === 4 && (q5Expectations.length === 0 || (q5Expectations.includes('I') && !q5OtherText.trim())))}
                     className="flex-[2] flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-indigo-600 text-white font-bold text-sm shadow-md shadow-indigo-200 hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed leading-tight"
                   >
                     <div className="flex flex-col items-center">

@@ -1,4 +1,4 @@
-import { FeedbackSubmission, PersonaType, PERSONA_MATCHERS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES, Q5_OPTIONS, BU_OPTIONS, Q2_Q4_OPTIONS } from './types';
+import { FeedbackSubmission, PersonaType, PERSONA_MATCHERS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES, Q5_OPTIONS, BU_OPTIONS } from './types';
 
 // Generate a realistic individual submission
 export function createSingleMockSubmission(id?: string): FeedbackSubmission {
@@ -19,7 +19,6 @@ export function createSingleMockSubmission(id?: string): FeedbackSubmission {
   
   // Decide Q2 & Q4 index
   const q2Values = ['A', 'B', 'C', 'D'];
-  const q2Helpful = q2Values[Math.floor(Math.random() * 4)];
   const q4Favorite = q2Values[Math.floor(Math.random() * 4)];
   const persona = PERSONA_MATCHERS[q4Favorite];
 
@@ -28,11 +27,11 @@ export function createSingleMockSubmission(id?: string): FeedbackSubmission {
   const q1Rating = getRandomRating();
   
   const q3Matrix = {
-    themeSpeech: getRandomRating(),
-    buStrategy: getRandomRating(),
-    relevance: getRandomRating(),
-    exhibition: getRandomRating(),
-    networking: getRandomRating()
+    keynoteSpeech: getRandomRating(),
+    panelDiscussion: getRandomRating(),
+    marketplace: getRandomRating(),
+    awardingCeremony: getRandomRating(),
+    supplierMeeting: getRandomRating()
   };
 
   // Random tags from Q5
@@ -50,7 +49,7 @@ export function createSingleMockSubmission(id?: string): FeedbackSubmission {
     company,
     businessUnit,
     q1Rating,
-    q2Helpful,
+    q2Rating: getRandomRating(),
     q3Matrix,
     q4Favorite,
     q5Expectations,
@@ -147,24 +146,15 @@ export function getTagCloudData(submissions: FeedbackSubmission[]) {
 
 // Get distribution of Q2 responses
 export function getQ2Distribution(submissions: FeedbackSubmission[]) {
-  let a = 0;
-  let b = 0;
-  let c = 0;
-  let d = 0;
-
-  submissions.forEach(s => {
-    if (s.q2Helpful === 'A') a++;
-    else if (s.q2Helpful === 'B') b++;
-    else if (s.q2Helpful === 'C') c++;
-    else if (s.q2Helpful === 'D') d++;
-  });
-
   const total = submissions.length || 1;
-
-  return [
-    { name: Q2_Q4_OPTIONS[0].labelZh, count: a, percent: Math.round((a / total) * 100), key: 'A', fill: 'bg-amber-500' },
-    { name: Q2_Q4_OPTIONS[1].labelZh, count: b, percent: Math.round((b / total) * 100), key: 'B', fill: 'bg-cyan-500' },
-    { name: Q2_Q4_OPTIONS[2].labelZh, count: c, percent: Math.round((c / total) * 100), key: 'C', fill: 'bg-rose-500' },
-    { name: Q2_Q4_OPTIONS[3].labelZh, count: d, percent: Math.round((d / total) * 100), key: 'D', fill: 'bg-fuchsia-500' }
-  ];
+  return [5, 4, 3, 2, 1].map((rating) => {
+    const count = submissions.filter((item) => item.q2Rating === rating).length;
+    return {
+      name: `${rating} 星`,
+      count,
+      percent: Math.round((count / total) * 100),
+      key: String(rating),
+      fill: rating >= 4 ? 'bg-emerald-500' : rating === 3 ? 'bg-amber-500' : 'bg-rose-500',
+    };
+  });
 }

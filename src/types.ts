@@ -1,9 +1,9 @@
 export interface Q3Matrix {
-  themeSpeech: number;
-  buStrategy: number;
-  relevance: number;
-  exhibition: number;
-  networking: number;
+  keynoteSpeech: number;
+  panelDiscussion: number;
+  marketplace: number;
+  awardingCeremony: number;
+  supplierMeeting: number;
 }
 
 export interface FeedbackSubmission {
@@ -13,7 +13,8 @@ export interface FeedbackSubmission {
   company: string;
   businessUnit: string;
   q1Rating: number;
-  q2Helpful: string;
+  q2Rating: number;
+  q2Helpful?: string;
   q3Matrix: Q3Matrix;
   q4Favorite: string;
   q5Expectations: string[];

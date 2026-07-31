@@ -9,7 +9,8 @@ export type StoredSubmission = {
   company: string;
   businessUnit: string;
   q1Rating: number;
-  q2Helpful: string;
+  q2Rating: number;
+  q2Helpful?: string;
   q3Matrix: Record<string, number>;
   q4Favorite: string;
   q5Expectations: string[];

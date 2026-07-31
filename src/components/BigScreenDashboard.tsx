@@ -234,7 +234,7 @@ export default function BigScreenDashboard({
         <div className="lg:col-span-7 bg-slate-50/50 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
           <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2 mb-3">
             <Award className="w-4 h-4 text-emerald-600" />
-            各环节业务价值分布 (Q2)
+            大会内容有用程度评分分布 (Q2)
           </h3>
 
           <div className="flex-1 flex flex-col justify-center space-y-3">
@@ -256,13 +256,7 @@ export default function BigScreenDashboard({
                       initial={{ width: 0 }}
                       animate={{ width: `${item.percent}%` }}
                       transition={{ duration: 0.8 }}
-                      className={`h-full rounded-lg ${
-                        item.key === 'A' 
-                          ? 'bg-gradient-to-r from-amber-500 to-amber-400' 
-                          : item.key === 'B' 
-                            ? 'bg-gradient-to-r from-cyan-500 to-cyan-400' 
-                            : 'bg-gradient-to-r from-fuchsia-500 to-fuchsia-400'
-                      }`}
+                      className={`h-full rounded-lg ${item.fill}`}
                     />
                   </div>
                 </div>
@@ -278,7 +272,7 @@ export default function BigScreenDashboard({
           <div>
             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
               <Tag className="w-4 h-4 text-indigo-600" />
-              下一届最期盼的加码干货 (Q3-实时共建词云)
+              下一届最期盼的加码干货 (Q4-实时共建词云)
             </h3>
             <p className="text-xs text-slate-500 mt-1">
               用户勾选后，代表该业务版块统计上升。标签百分比展示该诉求在供应商心中的热度指数。
