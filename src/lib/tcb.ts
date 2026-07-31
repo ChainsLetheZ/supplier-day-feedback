@@ -206,6 +206,12 @@ function fromDoc(row: Record<string, unknown>): FeedbackSubmission {
     q5OtherText: String(row.q5OtherText || ''),
     q6Suggestions: String(row.q6Suggestions || ''),
     timestamp: String(row.timestamp || new Date().toISOString()),
+    surveyStartedAt: row.surveyStartedAt ? String(row.surveyStartedAt) : undefined,
+    surveyCompletedAt: row.surveyCompletedAt ? String(row.surveyCompletedAt) : undefined,
+    surveyDurationSeconds:
+      typeof row.surveyDurationSeconds === 'number'
+        ? row.surveyDurationSeconds
+        : undefined,
     persona: (row.persona as FeedbackSubmission['persona']) || 'INNOVATOR',
     isHidden: Boolean(row.isHidden),
   };
@@ -226,6 +232,9 @@ function toDoc(submission: Omit<FeedbackSubmission, 'id'> & { id?: string }) {
     q5OtherText: submission.q5OtherText || '',
     q6Suggestions: submission.q6Suggestions || '',
     timestamp: submission.timestamp || new Date().toISOString(),
+    surveyStartedAt: submission.surveyStartedAt,
+    surveyCompletedAt: submission.surveyCompletedAt,
+    surveyDurationSeconds: submission.surveyDurationSeconds,
     persona: submission.persona,
     isHidden: Boolean(submission.isHidden),
   };

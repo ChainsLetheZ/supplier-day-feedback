@@ -21,6 +21,9 @@ export interface FeedbackSubmission {
   q5OtherText?: string;
   q6Suggestions: string;
   timestamp: string;
+  surveyStartedAt?: string;
+  surveyCompletedAt?: string;
+  surveyDurationSeconds?: number;
   persona: PersonaType;
   isHidden?: boolean;
 }

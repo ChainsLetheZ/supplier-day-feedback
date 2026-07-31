@@ -30,6 +30,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const [businessUnit, setBusinessUnit] = useState('');
   const [otherBusinessUnit, setOtherBusinessUnit] = useState('');
   const [basicInfoErrors, setBasicInfoErrors] = useState<BasicInfoErrors>({});
+  const [surveyStartedAt, setSurveyStartedAt] = useState(() => new Date().toISOString());
   
   const [localSubmission, setLocalSubmission] = useState<FeedbackSubmission | null>(() =>
     loadMySubmission()
@@ -125,6 +126,15 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     // Provisional random result. The storage layer applies the final 50-person cap.
     const personas: PersonaType[] = ['INNOVATOR', 'NAVIGATOR', 'ACCELERATOR', 'CONNECTOR'];
     const persona = personas[Math.floor(Math.random() * personas.length)];
+    const surveyCompletedAt = new Date().toISOString();
+    const surveyDurationSeconds = Math.max(
+      0,
+      Math.round(
+        (new Date(surveyCompletedAt).getTime() -
+          new Date(surveyStartedAt).getTime()) /
+          1000
+      )
+    );
 
     const submission: FeedbackSubmission = {
       id: `attendee-${Date.now()}`,
@@ -139,7 +149,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
       q5Expectations,
       q5OtherText,
       q6Suggestions,
-      timestamp: new Date().toISOString(),
+      timestamp: surveyCompletedAt,
+      surveyStartedAt,
+      surveyCompletedAt,
+      surveyDurationSeconds,
       persona: persona as PersonaType,
     };
 
@@ -170,6 +183,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     setBusinessUnit('');
     setOtherBusinessUnit('');
     setBasicInfoErrors({});
+    setSurveyStartedAt(new Date().toISOString());
     setQ1Rating(0);
     setQ2Rating(0);
     setQ3Matrix({

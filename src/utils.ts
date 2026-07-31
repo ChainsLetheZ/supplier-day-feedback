@@ -55,6 +55,9 @@ export function createSingleMockSubmission(id?: string): FeedbackSubmission {
     q5Expectations,
     q6Suggestions: 'Looking forward to next year!',
     timestamp,
+    surveyStartedAt: new Date(new Date(timestamp).getTime() - 180000).toISOString(),
+    surveyCompletedAt: timestamp,
+    surveyDurationSeconds: 180,
     persona
   };
 }

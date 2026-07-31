@@ -17,6 +17,9 @@ export type StoredSubmission = {
   q5OtherText?: string;
   q6Suggestions: string;
   timestamp: string;
+  surveyStartedAt?: string;
+  surveyCompletedAt?: string;
+  surveyDurationSeconds?: number;
   persona: string;
   isHidden?: boolean;
 };

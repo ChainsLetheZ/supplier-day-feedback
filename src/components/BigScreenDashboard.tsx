@@ -25,6 +25,15 @@ export default function BigScreenDashboard({
   // Modal & hide state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatSurveyDuration = (seconds?: number) => {
+    if (typeof seconds !== 'number') return '旧数据未记录';
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return minutes > 0
+      ? `${minutes} 分 ${remainingSeconds} 秒`
+      : `${remainingSeconds} 秒`;
+  };
+
   // Use visible submissions for calculations
   const visibleSubmissions = submissions.filter(sub => sub.id && !sub.isHidden);
 
@@ -543,6 +552,12 @@ export default function BigScreenDashboard({
                           </p>
                           <p className="text-[10px] text-slate-400 mt-1 font-mono">
                             ID: {sub.id} • {new Date(sub.timestamp).toLocaleString()}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-1 font-mono">
+                            问卷耗时: {formatSurveyDuration(sub.surveyDurationSeconds)}
+                            {sub.surveyStartedAt && sub.surveyCompletedAt
+                              ? ` • ${new Date(sub.surveyStartedAt).toLocaleTimeString()}–${new Date(sub.surveyCompletedAt).toLocaleTimeString()}`
+                              : ''}
                           </p>
                         </div>
 
