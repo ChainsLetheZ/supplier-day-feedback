@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Award, ChevronRight, Gift, Sparkles, Smartphone, Users, Check, 
-  Notebook, Presentation, Store, RefreshCw, Compass, Zap, Star
+import {
+  Award, ChevronRight, Check, RefreshCw, Star
 } from 'lucide-react';
 import { 
   FeedbackSubmission, PersonaType, PERSONA_DETAILS, Q5_OPTIONS, BU_OPTIONS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES
@@ -483,21 +482,6 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         </h3>
                       </div>
 
-                      <div className="bg-black/20 rounded-2xl p-4 border border-white/10 mb-6 backdrop-blur-lg">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Gift className={`w-4 h-4 ${currentPersonaConfig.textColor}`} />
-                          <span className="text-xs text-white/90 font-semibold tracking-wide">
-                            您的专属赠礼 Your Exclusive Gift
-                          </span>
-                        </div>
-                        <div className="text-sm font-bold text-white mb-2 leading-snug">
-                          {currentPersonaConfig.gift}
-                        </div>
-                        <p className="text-[10px] text-white/60 leading-relaxed font-sans">
-                          {currentPersonaConfig.description}
-                        </p>
-                      </div>
-
                       <div className="mt-auto pt-4 border-t border-white/10 flex justify-between items-end">
                         <div className="max-w-[70%]">
                           <h5 className="text-white font-bold text-base truncate">
@@ -511,22 +495,6 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                           </p>
                         </div>
                         <div className="text-right flex flex-col items-end">
-                          <div
-                            className={`w-12 h-12 rounded-xl flex items-center justify-center ${currentPersonaConfig.bgColor} border ${currentPersonaConfig.borderColor} mb-2`}
-                          >
-                            {currentPersonaConfig.giftIcon === 'Notebook' && (
-                              <Notebook className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
-                            )}
-                            {currentPersonaConfig.giftIcon === 'Compass' && (
-                              <Compass className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
-                            )}
-                            {currentPersonaConfig.giftIcon === 'Zap' && (
-                              <Zap className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
-                            )}
-                            {currentPersonaConfig.giftIcon === 'Users' && (
-                              <Users className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
-                            )}
-                          </div>
                           <span className="text-white/30 text-[9px] uppercase tracking-widest font-mono">
                             ID:{' '}
                             {activeSubmission.id?.split('-')[1]?.substring(0, 6) || '10293'}
@@ -537,9 +505,9 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   </div>
 
                   <p className="text-center text-[11px] text-slate-400 mt-6 px-4">
-                    请向会场工作人员出示此电子凭证以领取您的专属纪念品。感谢您的参与！
+                    感谢您参与本次供应商大会并分享宝贵意见！
                     <br />
-                    Please show this digital ticket to the staff to claim your souvenir.
+                    Thank you for participating and sharing your valuable feedback!
                   </p>
 
                   {/* Explicit restart — only this button goes back to Q1 */}
