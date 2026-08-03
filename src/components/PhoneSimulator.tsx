@@ -320,19 +320,28 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
               {step === 3 && (
                 <motion.div key="step-3" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
                   <div className="mb-4">
-                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">3. 活动维度体验满意度</h2>
-                    <p className="text-xs text-slate-500">矩阵题，1–5 分（1 = 低，5 = 高）</p>
+                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">
+                      3. 活动维度体验满意度
+                      <span className="block text-sm font-semibold text-slate-600 mt-1">Satisfaction with Event Dimensions</span>
+                    </h2>
+                    <p className="text-xs text-slate-500">
+                      矩阵题，1–5 分（1 = 低，5 = 高）<br />
+                      Matrix rating, 1–5 (1 = Low, 5 = High)
+                    </p>
                   </div>
                   <div className="space-y-4">
                     {[
-                      { key: 'keynoteSpeech', label: 'Keynote Speech' },
-                      { key: 'panelDiscussion', label: 'Panel Discussion' },
-                      { key: 'marketplace', label: 'Marketplace' },
-                      { key: 'awardingCeremony', label: 'Awarding ceremony' },
-                      { key: 'supplierMeeting', label: 'GB Individual Supplier Meeting' }
+                      { key: 'keynoteSpeech', labelZh: '主题演讲', labelEn: 'Keynote Speech' },
+                      { key: 'panelDiscussion', labelZh: '圆桌讨论', labelEn: 'Panel Discussion' },
+                      { key: 'marketplace', labelZh: '市集展示', labelEn: 'Marketplace' },
+                      { key: 'awardingCeremony', labelZh: '颁奖典礼', labelEn: 'Awarding Ceremony' },
+                      { key: 'supplierMeeting', labelZh: 'GB 单独供应商会议', labelEn: 'GB Individual Supplier Meeting' }
                     ].map((item) => (
                       <div key={item.key} className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
-                        <label className="block text-[11px] font-bold text-slate-800 mb-2">{item.label}</label>
+                        <div className="mb-2">
+                          <div className="text-[12px] font-bold text-slate-800">{item.labelZh}</div>
+                          <div className="text-[10px] font-medium text-slate-500 mt-0.5">{item.labelEn}</div>
+                        </div>
                         <div className="flex justify-between items-center px-2">
                           {[1, 2, 3, 4, 5].map((score) => {
                             const currentScore = (q3Matrix as any)[item.key];
@@ -340,6 +349,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                               <button
                                 key={score}
                                 onClick={() => setQ3Matrix({ ...q3Matrix, [item.key]: score })}
+                                aria-label={`${item.labelZh} ${item.labelEn}: ${score} 分`}
                                 className="focus:outline-none transition-transform hover:scale-110 p-1"
                               >
                                 <Star className={`w-6 h-6 transition-colors ${currentScore >= score ? 'fill-amber-400 text-amber-400' : 'fill-slate-100 text-slate-200 hover:text-amber-200'}`} />
