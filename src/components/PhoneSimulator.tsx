@@ -4,7 +4,7 @@ import {
   Award, ChevronRight, Check, RefreshCw, Star
 } from 'lucide-react';
 import { 
-  FeedbackSubmission, PersonaType, PERSONA_DETAILS, Q5_OPTIONS, BU_OPTIONS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES
+  FeedbackSubmission, ParticipantType, PersonaType, PERSONA_DETAILS, Q5_OPTIONS, BU_OPTIONS, MOCK_FIRST_NAMES, MOCK_LAST_NAMES, MOCK_COMPANIES
 } from '../types';
 import { loadMySubmission } from '../lib/localStore';
 
@@ -15,7 +15,7 @@ interface PhoneSimulatorProps {
 }
 
 type BasicInfoErrors = Partial<
-  Record<'name' | 'email' | 'company' | 'businessUnit' | 'otherBusinessUnit', string>
+  Record<'participantType' | 'email' | 'businessUnit' | 'otherBusinessUnit', string>
 >;
 
 export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onResetDemo }: PhoneSimulatorProps) {
@@ -23,6 +23,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(() =>
     loadMySubmission() ? 7 : 1
   );
+  const [participantType, setParticipantType] = useState<ParticipantType | ''>('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
@@ -71,6 +72,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     setName(fallbackName);
     setEmail(`${fallbackName.replace(/\s+/g, '.').toLowerCase()}@example.com`);
     setCompany(MOCK_COMPANIES[Math.floor(Math.random() * MOCK_COMPANIES.length)]);
+    setParticipantType(Math.random() > 0.5 ? 'BOSCH' : 'SUPPLIER');
     setBusinessUnit(BU_OPTIONS[Math.floor(Math.random() * BU_OPTIONS.length)]);
   };
 
@@ -78,13 +80,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     if (step === 1) {
       const errors: BasicInfoErrors = {};
       const normalizedEmail = email.trim();
-      if (!name.trim()) errors.name = '请输入姓名 Please enter your name';
-      if (!normalizedEmail) {
-        errors.email = '请输入邮箱 Please enter your email';
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      if (!participantType) errors.participantType = '请选择您的身份 Please select your participant type';
+      if (normalizedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
         errors.email = '邮箱格式不正确 Please enter a valid email address';
       }
-      if (!company.trim()) errors.company = '请输入公司名称 Please enter your company';
       if (!businessUnit) errors.businessUnit = '请选择事业部 Please select a business unit';
       if (businessUnit === 'Others' && !otherBusinessUnit.trim()) {
         errors.otherBusinessUnit = '请输入事业部名称 Please specify your business unit';
@@ -137,9 +136,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
 
     const submission: FeedbackSubmission = {
       id: `attendee-${Date.now()}`,
-      name: name.trim() || '匿名的供应商伙伴',
+      participantType: participantType as ParticipantType,
+      name: name.trim(),
       email: email.trim(),
-      company: company.trim() || '科技产业伙伴',
+      company: company.trim(),
       businessUnit: businessUnit === 'Others' ? otherBusinessUnit.trim() : businessUnit,
       q1Rating,
       q2Rating,
@@ -176,6 +176,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   };
 
   const startNewSurvey = () => {
+    setParticipantType('');
     setName('');
     setEmail('');
     setCompany('');
@@ -214,11 +215,11 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
           <div className="px-5 py-4 flex items-center justify-between border-b border-slate-200/60 bg-white/95 backdrop-blur-md z-40 sticky top-0">
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></div>
-              <h3 className="font-display font-bold text-sm text-slate-850 tracking-wider">SUPPLIER DAY 2026</h3>
+              <h3 className="font-display font-bold text-sm text-slate-850 tracking-wide">Bosch China Supplier Day</h3>
             </div>
             {step < 6 && (
               <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md">
-                Step {step} / 5
+                步骤 Step {step} / 5
               </span>
             )}
           </div>
@@ -231,26 +232,25 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                 <motion.div key="step-1" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
                   <div className="mb-6">
                     <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">基本信息 Basic Info</h2>
-                    <p className="text-xs text-slate-500">感谢参加本次 Bosch 供应商大会。<br/>Thank you for attending the Bosch Supplier Day.</p>
+                    <p className="text-xs text-slate-500">感谢参加 Bosch 中国区供应商大会。<br/>Thank you for attending the Bosch China Supplier Day.</p>
                   </div>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">姓名 Name</label>
-                      <input id="basic-name" type="text" value={name} onChange={(e) => { setName(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, name: undefined })); }} aria-invalid={!!basicInfoErrors.name} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.name ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的姓名 Your name" />
-                      {basicInfoErrors.name && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.name}</p>}
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">身份 Participant Type <span className="text-rose-500">* 必填 Required</span></label>
+                      <div id="basic-participantType" tabIndex={-1} className={`grid grid-cols-2 gap-2 rounded-xl ${basicInfoErrors.participantType ? 'ring-2 ring-rose-500/30' : ''}`}>
+                        {([
+                          { value: 'BOSCH', zh: '博世', en: 'Bosch' },
+                          { value: 'SUPPLIER', zh: '供应商', en: 'Supplier' },
+                        ] as const).map((option) => (
+                          <button key={option.value} type="button" onClick={() => { setParticipantType(option.value); setBasicInfoErrors((prev) => ({ ...prev, participantType: undefined })); }} className={`px-4 py-3 rounded-xl border text-sm font-semibold transition-colors ${participantType === option.value ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'bg-white border-slate-200 text-slate-700'}`}>
+                            {option.zh}<span className="block text-[10px] font-medium mt-0.5">{option.en}</span>
+                          </button>
+                        ))}
+                      </div>
+                      {basicInfoErrors.participantType && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.participantType}</p>}
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">邮箱 Email</label>
-                      <input id="basic-email" type="email" inputMode="email" autoCapitalize="none" value={email} onChange={(e) => { setEmail(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, email: undefined })); }} aria-invalid={!!basicInfoErrors.email} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的邮箱 Your email" />
-                      {basicInfoErrors.email && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.email}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company</label>
-                      <input id="basic-company" type="text" value={company} onChange={(e) => { setCompany(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, company: undefined })); }} aria-invalid={!!basicInfoErrors.company} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.company ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的公司名称 Your company" />
-                      {basicInfoErrors.company && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.company}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">您归属的事业部 Business Unit</label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">您归属的事业部 Business Unit <span className="text-rose-500">* 必填 Required</span></label>
                       <select id="basic-businessUnit" value={businessUnit || ""} onChange={(e) => { setBusinessUnit(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, businessUnit: undefined, otherBusinessUnit: undefined })); }} aria-invalid={!!basicInfoErrors.businessUnit} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.businessUnit ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`}>
                         <option value="" disabled>请选择 Please select</option>
                         {BU_OPTIONS.map(bu => <option key={bu} value={bu}>{bu}</option>)}
@@ -268,6 +268,19 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         />
                       )}
                       {basicInfoErrors.otherBusinessUnit && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.otherBusinessUnit}</p>}
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company <span className="text-slate-400">选填 Optional</span></label>
+                      <input id="basic-company" type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">姓名 Name <span className="text-slate-400">选填 Optional</span></label>
+                      <input id="basic-name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的姓名 Your name" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">邮箱 Email <span className="text-slate-400">选填 Optional</span></label>
+                      <input id="basic-email" type="email" inputMode="email" autoCapitalize="none" value={email} onChange={(e) => { setEmail(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, email: undefined })); }} aria-invalid={!!basicInfoErrors.email} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的邮箱 Your email" />
+                      {basicInfoErrors.email && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.email}</p>}
                     </div>
                   </div>
                 </motion.div>
@@ -429,7 +442,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                     </div>
                     <h2 className="text-xl font-bold text-slate-800">正在生成专属结果…</h2>
                     <p className="text-sm text-slate-500 text-center px-4">
-                      请稍候，不要返回。正在根据您的反馈匹配 Supplier Day 徽章
+                      请稍候，不要返回。正在根据您的反馈匹配专属 Persona
                       <br />
                       Please wait — generating your badge…
                     </p>
@@ -461,14 +474,14 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         <div
                           className={`px-2.5 py-1 text-[10px] uppercase font-bold tracking-widest rounded-md ${currentPersonaConfig.bgColor} ${currentPersonaConfig.textColor} border ${currentPersonaConfig.borderColor} backdrop-blur-md shadow-sm`}
                         >
-                          BOSCH SUPPLIER DAY 2026
+                          Bosch China Supplier Day
                         </div>
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
                       </div>
 
                       <div className="text-center mb-6 mt-2">
                         <h4 className="text-white/60 font-medium text-xs mb-1 uppercase tracking-wider">
-                          YOUR PERSONA
+                          您的 PERSONA · YOUR PERSONA
                         </h4>
                         <h2
                           className={`text-3xl font-black font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-b ${currentPersonaConfig.themeGradient.replace('from-', 'from-white via-').replace('to-', 'to-white/80')}`}
@@ -485,10 +498,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <div className="mt-auto pt-4 border-t border-white/10 flex justify-between items-end">
                         <div className="max-w-[70%]">
                           <h5 className="text-white font-bold text-base truncate">
-                            {activeSubmission.name}
+                            {activeSubmission.name || '嘉宾 Guest'}
                           </h5>
                           <p className="text-white/50 text-xs truncate">
-                            {activeSubmission.company}
+                            {activeSubmission.company || '未填写公司 Company not provided'}
                           </p>
                           <p className="text-white/40 text-[10px] mt-1 truncate">
                             BU: {activeSubmission.businessUnit}

@@ -20,12 +20,12 @@ import {
 
 const personaLabel = (persona: FeedbackSubmission['persona']) =>
   persona === 'INNOVATOR'
-    ? '创新先锋'
+    ? '创新共创者'
     : persona === 'NAVIGATOR'
-      ? '领航舵手'
+      ? '远见领航者'
       : persona === 'ACCELERATOR'
-        ? '增长引擎'
-        : '社群链接者';
+        ? '高效推进者'
+        : '生态链接者';
 
 type Notification = {
   message: string;
@@ -101,7 +101,11 @@ function MobileRoute() {
       setLastSubmission(savedDoc);
 
       const firstName =
-        savedDoc.name.length > 3 ? savedDoc.name.substring(0, 3) : savedDoc.name;
+        savedDoc.name
+          ? savedDoc.name.length > 3
+            ? savedDoc.name.substring(0, 3)
+            : savedDoc.name
+          : '嘉宾';
       triggerNotification(
         `感谢 ${firstName}！您已获得「${personaLabel(savedDoc.persona)}」专属勋章。`
       );

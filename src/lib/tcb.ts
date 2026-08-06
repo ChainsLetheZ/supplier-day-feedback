@@ -185,6 +185,8 @@ function fromDoc(row: Record<string, unknown>): FeedbackSubmission {
   const id = String(row._id || row.id || '');
   return {
     id,
+    participantType:
+      row.participantType === 'BOSCH' ? 'BOSCH' : 'SUPPLIER',
     name: String(row.name || ''),
     email: String(row.email || ''),
     company: String(row.company || ''),
@@ -220,6 +222,7 @@ function fromDoc(row: Record<string, unknown>): FeedbackSubmission {
 function toDoc(submission: Omit<FeedbackSubmission, 'id'> & { id?: string }) {
   // CloudBase 文档字段：避免传入客户端临时 id
   return {
+    participantType: submission.participantType,
     name: submission.name,
     email: submission.email,
     company: submission.company,

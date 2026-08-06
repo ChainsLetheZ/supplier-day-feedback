@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 export type StoredSubmission = {
   id?: string;
+  participantType: 'BOSCH' | 'SUPPLIER';
   name: string;
   email: string;
   company: string;

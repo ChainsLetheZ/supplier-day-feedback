@@ -8,6 +8,7 @@ export interface Q3Matrix {
 
 export interface FeedbackSubmission {
   id?: string;
+  participantType: ParticipantType;
   name: string;
   email: string;
   company: string;
@@ -28,6 +29,7 @@ export interface FeedbackSubmission {
   isHidden?: boolean;
 }
 
+export type ParticipantType = 'BOSCH' | 'SUPPLIER';
 export type PersonaType = 'INNOVATOR' | 'NAVIGATOR' | 'ACCELERATOR' | 'CONNECTOR';
 
 export interface PersonaConfig {
@@ -56,63 +58,63 @@ export const PERSONA_MATCHERS: Record<string, PersonaType> = {
 export const PERSONA_DETAILS: Record<PersonaType, PersonaConfig> = {
   INNOVATOR: {
     type: 'INNOVATOR',
-    title: 'The Innovator',
-    titleZh: '创新先锋',
+    title: 'Innovator',
+    titleZh: '创新共创者',
     badge: 'Innovator',
     sticker: '灵感源泉',
-    gift: '极简设计笔记本组合',
-    giftIcon: 'Notebook',
-    description: '您是“创新先锋”！思维超前，掌控全局。您在今天的主题演讲中汲取了最多的养分。匹配一份极简设计笔记本组合，用于随笔记录宏伟的灵感火花。',
-    textColor: 'text-amber-400',
-    bgColor: 'bg-amber-950/40',
-    borderColor: 'border-amber-500/40',
-    glowColor: 'shadow-amber-500/50',
-    themeGradient: 'from-amber-600 via-yellow-500 to-amber-700',
+    gift: '青色徽章 Teal Badge',
+    giftIcon: 'Award',
+    description: '创新共创者善于激发灵感，与伙伴共同创造新的可能。 Innovators inspire ideas and co-create new possibilities.',
+    textColor: 'text-teal-300',
+    bgColor: 'bg-teal-950/40',
+    borderColor: 'border-teal-400/50',
+    glowColor: 'shadow-teal-500/50',
+    themeGradient: 'from-teal-700 via-teal-500 to-emerald-700',
   },
   NAVIGATOR: {
     type: 'NAVIGATOR',
-    title: 'The Navigator',
-    titleZh: '领航舵手',
+    title: 'Navigator',
+    titleZh: '远见领航者',
     badge: 'Navigator',
     sticker: '方向指引',
-    gift: '多功能铝制手机支架',
-    giftIcon: 'Compass',
-    description: '您是“领航舵手”！善于在复杂信息中找到方向。今天的圆桌论坛为您提供了最清晰的指引。',
-    textColor: 'text-cyan-400',
-    bgColor: 'bg-cyan-950/40',
-    borderColor: 'border-cyan-500/40',
-    glowColor: 'shadow-cyan-500/50',
-    themeGradient: 'from-cyan-600 via-teal-500 to-cyan-700',
+    gift: '蓝色徽章 Blue Badge',
+    giftIcon: 'Award',
+    description: '远见领航者善于洞察方向，以清晰目标带领伙伴前行。 Navigators see the way forward and guide others with clarity.',
+    textColor: 'text-blue-300',
+    bgColor: 'bg-blue-950/40',
+    borderColor: 'border-blue-400/50',
+    glowColor: 'shadow-blue-500/50',
+    themeGradient: 'from-blue-700 via-sky-500 to-blue-800',
   },
   ACCELERATOR: {
     type: 'ACCELERATOR',
-    title: 'The Accelerator',
-    titleZh: '增长引擎',
+    title: 'Accelerator',
+    titleZh: '高效推进者',
     badge: 'Accelerator',
     sticker: '业务助推',
-    gift: '快速充电宝',
-    giftIcon: 'Zap',
-    description: '您是“增长引擎”！注重实效，寻找加速业务发展的机会。Marketplace 是您的主场。',
-    textColor: 'text-rose-400',
-    bgColor: 'bg-rose-950/40',
-    borderColor: 'border-rose-500/40',
-    glowColor: 'shadow-rose-500/50',
-    themeGradient: 'from-rose-600 via-pink-500 to-rose-700',
+    gift: '紫色徽章 Purple Badge',
+    giftIcon: 'Award',
+    description: '高效推进者聚焦行动与成果，推动团队快速前进。 Accelerators turn ideas into action and move teams forward efficiently.',
+    textColor: 'text-fuchsia-300',
+    bgColor: 'bg-purple-950/40',
+    borderColor: 'border-fuchsia-400/50',
+    glowColor: 'shadow-fuchsia-500/50',
+    themeGradient: 'from-purple-800 via-fuchsia-600 to-violet-900',
   },
   CONNECTOR: {
     type: 'CONNECTOR',
-    title: 'The Connector',
-    titleZh: '社群链接者',
+    title: 'Connector',
+    titleZh: '生态链接者',
     badge: 'Connector',
     sticker: '超级连接',
-    gift: '精美皮革多层卡包',
-    giftIcon: 'Users',
-    description: '您是“社群链接者”！高情商，善于链接资源与人脉。一对一供应商会议让您如鱼得水。为您呈递精美卡包，便于收纳新结识伙伴的闪光名片。',
-    textColor: 'text-fuchsia-400',
-    bgColor: 'bg-fuchsia-950/40',
-    borderColor: 'border-fuchsia-500/40',
-    glowColor: 'shadow-fuchsia-500/50',
-    themeGradient: 'from-fuchsia-600 via-purple-500 to-fuchsia-700',
+    gift: '绿色徽章 Green Badge',
+    giftIcon: 'Award',
+    description: '生态链接者善于连接伙伴、资源与机会，促进生态协作。 Connectors bring people, resources and opportunities together.',
+    textColor: 'text-emerald-300',
+    bgColor: 'bg-emerald-950/40',
+    borderColor: 'border-emerald-400/50',
+    glowColor: 'shadow-emerald-500/50',
+    themeGradient: 'from-emerald-800 via-green-600 to-emerald-900',
   }
 };
 

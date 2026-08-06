@@ -85,13 +85,13 @@ export default function BigScreenDashboard({
   const getBadgeStyle = (persona: string) => {
     switch (persona) {
       case 'INNOVATOR':
-        return 'bg-amber-50 border-amber-200 text-amber-700 font-semibold';
+        return 'bg-teal-50 border-teal-200 text-teal-700 font-semibold';
       case 'NAVIGATOR':
-        return 'bg-cyan-50 border-cyan-200 text-cyan-700 font-semibold';
+        return 'bg-blue-50 border-blue-200 text-blue-700 font-semibold';
       case 'ACCELERATOR':
-        return 'bg-rose-50 border-rose-200 text-rose-700 font-semibold';
+        return 'bg-purple-50 border-purple-200 text-purple-700 font-semibold';
       case 'CONNECTOR':
-        return 'bg-fuchsia-50 border-fuchsia-200 text-fuchsia-700 font-semibold';
+        return 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold';
       default:
         return 'bg-slate-100 border-slate-200 text-slate-600';
     }
@@ -386,7 +386,7 @@ export default function BigScreenDashboard({
             {/* Persona Switchers */}
             <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200/50">
               {['ALL', 'INNOVATOR', 'NAVIGATOR', 'ACCELERATOR', 'CONNECTOR'].map((cat) => {
-                const label = cat === 'ALL' ? '全部' : cat === 'INNOVATOR' ? '创新先锋' : cat === 'NAVIGATOR' ? '领航舵手' : cat === 'ACCELERATOR' ? '增长引擎' : '社群链接者';
+                const label = cat === 'ALL' ? '全部' : cat === 'INNOVATOR' ? '创新共创者' : cat === 'NAVIGATOR' ? '远见领航者' : cat === 'ACCELERATOR' ? '高效推进者' : '生态链接者';
                 const isSelected = filterPersona === cat;
                 return (
                   <button
@@ -471,7 +471,7 @@ export default function BigScreenDashboard({
                       {/* Gift representation */}
                       <div className="flex items-center gap-1.5 text-slate-500 text-[11px] bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-150">
                         <Award className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                        <span className="truncate max-w-[130px] font-medium text-slate-600">{pers.sticker} Sticker + 礼品</span>
+                        <span className="truncate max-w-[130px] font-medium text-slate-600">{pers.gift}</span>
                       </div>
                     </div>
                   </motion.div>
