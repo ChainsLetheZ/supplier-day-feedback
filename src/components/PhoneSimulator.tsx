@@ -483,10 +483,9 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
                       <p className="mt-4 max-w-[18rem] text-[11px] leading-relaxed text-white/75">{currentPersonaConfig.description}</p>
                       {activeSubmission.name && <span className="mt-8 text-xs text-white/70">{activeSubmission.name}</span>}
-                      {activeSubmission.id && <span className="mt-1 text-[10px] text-white/50">ID {activeSubmission.id.split('-')[1]?.substring(0, 6)}</span>}
                       <span className="mt-7 rounded-full border border-white/60 bg-white/15 px-5 py-2 text-xs font-bold tracking-wide shadow-lg">点击翻转查看礼物<br /><span className="text-[10px] font-normal">Tap to flip and reveal your gift</span></span>
                     </button>
-                    <div style={{ transform: 'rotateY(180deg)' }} className={`relative z-10 p-5 flex flex-col h-full min-h-[20rem] backdrop-blur-md transition-opacity duration-300 ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    <div style={{ transform: 'rotateY(180deg)' }} className={`relative z-10 p-5 flex flex-col h-full min-h-[24rem] backdrop-blur-md transition-opacity duration-300 ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                       <div className="flex justify-between items-start mb-6">
                         <div aria-hidden="true" />
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
@@ -522,12 +521,6 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                           <p className="text-white/40 text-[10px] mt-1 truncate">
                             BU: {activeSubmission.businessUnit}
                           </p>
-                        </div>
-                        <div className="text-right flex flex-col items-end">
-                          <span className="text-white/30 text-[9px] uppercase tracking-widest font-mono">
-                            ID:{' '}
-                            {activeSubmission.id?.split('-')[1]?.substring(0, 6) || '10293'}
-                          </span>
                         </div>
                       </div>
                     </div>
