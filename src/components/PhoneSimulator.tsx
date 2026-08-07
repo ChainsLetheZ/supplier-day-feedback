@@ -477,7 +477,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <div className="absolute top-10 -left-10 w-32 h-32 bg-indigo-500 blur-[50px] rounded-full opacity-20"></div>
                     </div>
 
-                    <button type="button" onClick={(event) => { event.stopPropagation(); setShowGift(true); }} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/70 transition-opacity duration-300 ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setShowGift(true); }} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-transparent transition-opacity duration-300 ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                       <span className="text-sm font-semibold text-white/85">感谢您的填写，您的专属人物画像是：<br /><span className="text-[11px] text-white/65">Thank you. Your persona is:</span></span>
                       <strong className="mt-3 text-4xl font-black">{currentPersonaConfig.titleZh}</strong>
                       <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
@@ -491,12 +491,12 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
                       </div>
 
-                      <div className="mb-4 rounded-2xl border border-white/15 bg-black/20 p-3 backdrop-blur-lg">
-                        <div className="flex items-center gap-3">
+                      <div className="mb-4 rounded-2xl border border-white/15 bg-transparent p-4">
+                        <div className="flex flex-col items-center gap-4 text-center">
                           <img
                             src={currentPersonaConfig.giftImage}
                             alt={`${currentPersonaConfig.titleZh} ${currentPersonaConfig.gift}`}
-                            className="w-32 h-32 rounded-xl object-cover bg-white shrink-0 shadow-lg"
+                            className="w-44 h-44 rounded-xl object-cover bg-white shrink-0 shadow-lg"
                           />
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5 mb-1">
