@@ -477,12 +477,13 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <div className="absolute top-10 -left-10 w-32 h-32 bg-indigo-500 blur-[50px] rounded-full opacity-20"></div>
                     </div>
 
-                    <button type="button" onClick={(event) => { event.stopPropagation(); setShowGift(true); }} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/95 transition-opacity duration-300 ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setShowGift(true); }} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/70 transition-opacity duration-300 ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                       <span className="text-xs tracking-widest uppercase text-white/60">Your Persona</span>
                       <strong className="mt-3 text-4xl font-black">{currentPersonaConfig.titleZh}</strong>
                       <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
-                      <span className="mt-8 text-xs text-white/60">{activeSubmission.name || '嘉宾 Guest'} · ID {activeSubmission.id?.split('-')[1]?.substring(0, 6) || '10293'}</span>
-                      <span className="mt-6 text-[10px] text-white/50">点击查看礼物 · Tap to reveal gift</span>
+                      {activeSubmission.name && <span className="mt-8 text-xs text-white/70">{activeSubmission.name}</span>}
+                      {activeSubmission.id && <span className="mt-1 text-[10px] text-white/50">ID {activeSubmission.id.split('-')[1]?.substring(0, 6)}</span>}
+                      <span className="mt-7 rounded-full border border-white/60 bg-white/15 px-5 py-2 text-xs font-bold tracking-wide shadow-lg">点击翻转查看礼物<br /><span className="text-[10px] font-normal">Tap to flip and reveal your gift</span></span>
                     </button>
                     <div style={{ transform: 'rotateY(180deg)' }} className={`relative z-10 p-5 flex flex-col h-full min-h-[20rem] backdrop-blur-md transition-opacity duration-300 ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                       <div className="flex justify-between items-start mb-6">
@@ -495,7 +496,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                           <img
                             src={currentPersonaConfig.giftImage}
                             alt={`${currentPersonaConfig.titleZh} ${currentPersonaConfig.gift}`}
-                            className="w-24 h-24 rounded-xl object-cover bg-white shrink-0"
+                            className="w-32 h-32 rounded-xl object-cover bg-white shrink-0 shadow-lg"
                           />
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5 mb-1">
@@ -515,12 +516,8 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
 
                       <div className="mt-auto pt-4 border-t border-white/10 flex justify-between items-end">
                         <div className="max-w-[70%]">
-                          <h5 className="text-white font-bold text-base truncate">
-                            {activeSubmission.name || '嘉宾 Guest'}
-                          </h5>
-                          <p className="text-white/50 text-xs truncate">
-                            {activeSubmission.company || '未填写公司 Company not provided'}
-                          </p>
+                          {activeSubmission.name && <h5 className="text-white font-bold text-base truncate">{activeSubmission.name}</h5>}
+                          {activeSubmission.company && <p className="text-white/50 text-xs truncate">{activeSubmission.company}</p>}
                           <p className="text-white/40 text-[10px] mt-1 truncate">
                             BU: {activeSubmission.businessUnit}
                           </p>
