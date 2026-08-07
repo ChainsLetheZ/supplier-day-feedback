@@ -63,7 +63,7 @@ export const PERSONA_DETAILS: Record<PersonaType, PersonaConfig> = {
     titleZh: '创新共创者',
     badge: 'Innovator',
     sticker: '灵感源泉',
-    gift: '青色徽章 Teal Badge',
+    gift: '青色徽章 Turquoise Badge',
     giftImage: '/persona-gifts/innovator-teal.jpg',
     giftIcon: 'Award',
     description: '创新共创者善于激发灵感，与伙伴共同创造新的可能。 Innovators inspire ideas and co-create new possibilities.',
