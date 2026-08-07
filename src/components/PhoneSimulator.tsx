@@ -485,7 +485,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       {activeSubmission.name && <span className="mt-8 text-xs text-white/70">{activeSubmission.name}</span>}
                       <span className="mt-7 rounded-full border border-white/60 bg-white/15 px-5 py-2 text-xs font-bold tracking-wide shadow-lg">点击翻转查看礼物<br /><span className="text-[10px] font-normal">Tap to flip and reveal your gift</span></span>
                     </button>
-                    <div style={{ transform: 'rotateY(180deg)' }} className={`relative z-10 p-5 flex flex-col h-full min-h-[24rem] backdrop-blur-md transition-opacity duration-300 ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    <div style={{ transform: 'rotateY(180deg)' }} className={`relative z-10 p-6 flex flex-col h-full min-h-[30rem] justify-center backdrop-blur-md transition-opacity duration-300 ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                       <div className="flex justify-between items-start mb-6">
                         <div aria-hidden="true" />
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
@@ -514,7 +514,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         </div>
                       </div>
 
-                      <div className="mt-auto pt-4 border-t border-white/10 flex justify-between items-end">
+                      <div className="mt-5 pt-4 border-t border-white/10 flex justify-between items-end">
                         <div className="max-w-[70%]">
                           {activeSubmission.name && <h5 className="text-white font-bold text-base truncate">{activeSubmission.name}</h5>}
                           {activeSubmission.company && <p className="text-white/50 text-xs truncate">{activeSubmission.company}</p>}
