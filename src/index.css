@@ -41,10 +41,11 @@
 
 .bosch-brand-header {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
   min-block-size: 4rem;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1rem 0.55rem;
   background: #fff;
   border-block-end: 1px solid var(--bosch-line);
 }
@@ -55,13 +56,9 @@
   block-size: auto;
 }
 
-.bosch-brand-title {
-  color: var(--bosch-graphite);
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
+.bosch-progress { inline-size: 100%; }
+.bosch-progress-track { display: block; inline-size: 100%; block-size: 0.25rem; background: #e6e6e6; overflow: hidden; }
+.bosch-progress-fill { display: block; block-size: 100%; background: var(--bosch-action); transition: width 0.25s ease; }
 
 .bosch-ui .bg-white {
   background-color: #fff;
@@ -101,31 +98,36 @@
 }
 
 .bosch-ui .rounded-xl,
-.bosch-ui .rounded-2xl {
-  border-radius: 0.5rem;
+.bosch-ui .rounded-2xl,
+.bosch-ui .rounded-3xl,
+.bosch-ui input,
+.bosch-ui textarea,
+.bosch-ui select,
+.bosch-ui button {
+  border-radius: 0;
 }
 
-.bosch-ui .rounded-3xl {
-  border-radius: 0.75rem;
+.bosch-ui button {
+  min-block-size: 2.75rem;
 }
 
 .bosch-ui input,
 .bosch-ui textarea,
 .bosch-ui select {
   border-color: var(--bosch-line);
-  border-radius: 0.5rem;
+  border-radius: 0;
 }
 
 .bosch-ui input:focus,
 .bosch-ui textarea:focus,
 .bosch-ui select:focus {
   border-color: var(--bosch-action);
-  outline: 2px solid rgb(0 123 192 / 0.16);
+  outline: 3px solid rgb(0 123 192 / 0.16);
   outline-offset: 1px;
 }
 
 .bosch-ui button:focus-visible {
-  outline: 2px solid var(--bosch-action);
+  outline: 3px solid var(--bosch-action);
   outline-offset: 2px;
 }
 

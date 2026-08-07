@@ -211,25 +211,15 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
       <img className="bosch-supergraphic" src="/brand/supergraphic-responsive.svg" alt="" aria-hidden="true" />
       <header className="bosch-brand-header" aria-label="Bosch China Supplier Day">
         <img className="bosch-brand-logo" src="/brand/bosch-logo.svg" alt="Bosch" />
-        <span className="bosch-brand-title">China Supplier Day 2026</span>
+        <div className="bosch-progress" role="progressbar" aria-label="Questionnaire progress" aria-valuemin={0} aria-valuemax={5} aria-valuenow={Math.min(step, 5)}>
+          <span className="bosch-progress-track"><span className="bosch-progress-fill" style={{ width: `${Math.min(step, 5) / 5 * 100}%` }} /></span>
+        </div>
       </header>
       <div className="max-w-md mx-auto w-full min-h-0 flex flex-col flex-1 relative bg-white sm:rounded-[32px] sm:shadow-2xl sm:border border-slate-200 overflow-hidden">
         
-        <div className="w-full h-full flex flex-col select-none text-slate-800">
+        <div className="w-full h-full min-h-0 flex flex-col select-none text-slate-800">
           
-          <div className="px-5 py-4 flex items-center justify-between border-b border-slate-200/60 bg-white/95 backdrop-blur-md z-40 sticky top-0">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></div>
-              <h3 className="font-display font-bold text-sm text-slate-850 tracking-wide">Bosch China Supplier Day</h3>
-            </div>
-            {step < 6 && (
-              <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md">
-                步骤 Step {step} / 5
-              </span>
-            )}
-          </div>
-
-          <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col pb-24">
+          <div className="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col pb-24">
             <AnimatePresence mode="wait">
               
               {/* STEP 1: Basic Info */}
@@ -393,7 +383,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         <span className="text-[10px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full shrink-0">最多3项 Max 3</span>
                       </div>
                       <p className="text-[10px] text-slate-500 mb-3 animate-pulse font-bold text-center">👇 请上下滑动查看全部选项 Please scroll to see all options 👇</p>
-                      <div className="space-y-2 overflow-y-auto max-h-[45vh] pr-1 custom-scrollbar pb-10">
+                      <div className="space-y-2 pr-1 pb-10">
                         {Q5_OPTIONS.map(opt => {
                           const isSelected = q5Expectations.includes(opt.key);
                           const isDisabled = !isSelected && q5Expectations.length >= 3;
@@ -476,11 +466,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
 
                     <div className="relative z-10 p-5 flex flex-col h-full backdrop-blur-md">
                       <div className="flex justify-between items-start mb-6">
-                        <div
-                          className={`px-2.5 py-1 text-[10px] uppercase font-bold tracking-widest rounded-md ${currentPersonaConfig.bgColor} ${currentPersonaConfig.textColor} border ${currentPersonaConfig.borderColor} backdrop-blur-md shadow-sm`}
-                        >
-                          Bosch China Supplier Day
-                        </div>
+                        <div aria-hidden="true" />
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
                       </div>
 
