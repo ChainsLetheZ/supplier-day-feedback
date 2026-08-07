@@ -39,6 +39,7 @@ export interface PersonaConfig {
   badge: string;
   sticker: string;
   gift: string;
+  giftImage: string;
   giftIcon: string;
   description: string;
   textColor: string;
@@ -63,6 +64,7 @@ export const PERSONA_DETAILS: Record<PersonaType, PersonaConfig> = {
     badge: 'Innovator',
     sticker: '灵感源泉',
     gift: '青色徽章 Teal Badge',
+    giftImage: '/persona-gifts/innovator-teal.jpg',
     giftIcon: 'Award',
     description: '创新共创者善于激发灵感，与伙伴共同创造新的可能。 Innovators inspire ideas and co-create new possibilities.',
     textColor: 'text-teal-300',
@@ -78,6 +80,7 @@ export const PERSONA_DETAILS: Record<PersonaType, PersonaConfig> = {
     badge: 'Navigator',
     sticker: '方向指引',
     gift: '蓝色徽章 Blue Badge',
+    giftImage: '/persona-gifts/navigator-blue.jpg',
     giftIcon: 'Award',
     description: '远见领航者善于洞察方向，以清晰目标带领伙伴前行。 Navigators see the way forward and guide others with clarity.',
     textColor: 'text-blue-300',
@@ -93,6 +96,7 @@ export const PERSONA_DETAILS: Record<PersonaType, PersonaConfig> = {
     badge: 'Accelerator',
     sticker: '业务助推',
     gift: '紫色徽章 Purple Badge',
+    giftImage: '/persona-gifts/accelerator-purple.jpg',
     giftIcon: 'Award',
     description: '高效推进者聚焦行动与成果，推动团队快速前进。 Accelerators turn ideas into action and move teams forward efficiently.',
     textColor: 'text-fuchsia-300',
@@ -108,6 +112,7 @@ export const PERSONA_DETAILS: Record<PersonaType, PersonaConfig> = {
     badge: 'Connector',
     sticker: '超级连接',
     gift: '绿色徽章 Green Badge',
+    giftImage: '/persona-gifts/connector-green.jpg',
     giftIcon: 'Award',
     description: '生态链接者善于连接伙伴、资源与机会，促进生态协作。 Connectors bring people, resources and opportunities together.',
     textColor: 'text-emerald-300',

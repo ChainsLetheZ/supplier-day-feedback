@@ -495,6 +495,29 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         </h3>
                       </div>
 
+                      <div className="mb-6 rounded-2xl border border-white/15 bg-black/20 p-3 backdrop-blur-lg">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={currentPersonaConfig.giftImage}
+                            alt={`${currentPersonaConfig.titleZh} ${currentPersonaConfig.gift}`}
+                            className="w-24 h-24 rounded-xl object-cover bg-white shrink-0"
+                          />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <Award className={`w-4 h-4 shrink-0 ${currentPersonaConfig.textColor}`} />
+                              <span className="text-[10px] font-semibold text-white/60">您的礼品 · Your Gift</span>
+                            </div>
+                            <p className="text-sm font-bold text-white">
+                              {currentPersonaConfig.gift}
+                            </p>
+                            <p className="text-[10px] text-white/65 mt-2 leading-relaxed">
+                              请寻找相关工作人员领取礼物<br />
+                              Please find the designated staff member to collect your gift.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="mt-auto pt-4 border-t border-white/10 flex justify-between items-end">
                         <div className="max-w-[70%]">
                           <h5 className="text-white font-bold text-base truncate">
