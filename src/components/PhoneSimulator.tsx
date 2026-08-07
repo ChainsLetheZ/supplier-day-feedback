@@ -499,8 +499,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                             className="w-44 h-44 rounded-xl object-cover bg-white shrink-0 shadow-lg"
                           />
                           <div className="min-w-0">
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <Award className={`w-4 h-4 shrink-0 ${currentPersonaConfig.textColor}`} />
+                            <div className="flex items-center justify-center mb-1">
                               <span className="text-[10px] font-semibold text-white/60">您的礼品 · Your Gift</span>
                             </div>
                             <p className="text-sm font-bold text-white">
