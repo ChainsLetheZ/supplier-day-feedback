@@ -465,10 +465,11 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   className="flex flex-col flex-1 items-center justify-center py-4"
                 >
                   <div
+                    onClick={() => setShowGift((value) => !value)}
                     className={`w-full max-w-sm mx-auto relative rounded-2xl overflow-hidden bg-slate-900 border-2 ${currentPersonaConfig.borderColor} ${currentPersonaConfig.glowColor} shadow-2xl transition-all duration-700`}
                     style={{ perspective: '1000px' }}
                   >
-                    <div className="absolute inset-0 opacity-40">
+                    <div className="absolute inset-0 opacity-20">
                       <div
                         className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${currentPersonaConfig.themeGradient}`}
                       ></div>
@@ -476,36 +477,20 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <div className="absolute top-10 -left-10 w-32 h-32 bg-indigo-500 blur-[50px] rounded-full opacity-20"></div>
                     </div>
 
-                    <button type="button" onClick={() => setShowGift(true)} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/80 backdrop-blur-sm transition-all duration-700 [transform-style:preserve-3d] ${showGift ? 'opacity-0 pointer-events-none [transform:rotateY(180deg)]' : 'opacity-100'}`}>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setShowGift(true); }} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/80 backdrop-blur-sm transition-all duration-700 [transform-style:preserve-3d] ${showGift ? 'opacity-0 pointer-events-none [transform:rotateY(180deg)]' : 'opacity-100'}`}>
                       <span className="text-xs tracking-widest uppercase text-white/60">Your Persona</span>
                       <strong className="mt-3 text-4xl font-black">{currentPersonaConfig.titleZh}</strong>
                       <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
                       <span className="mt-8 text-xs text-white/60">{activeSubmission.name || '嘉宾 Guest'} · ID {activeSubmission.id?.split('-')[1]?.substring(0, 6) || '10293'}</span>
                       <span className="mt-6 text-[10px] text-white/50">点击查看礼物 · Tap to reveal gift</span>
                     </button>
-                    <div className={`relative z-10 p-5 flex flex-col h-full min-h-[25rem] backdrop-blur-md transition-all duration-700 [transform-style:preserve-3d] ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none [transform:rotateY(180deg)]'}`}>
+                    <div className={`relative z-10 p-5 flex flex-col h-full min-h-[20rem] backdrop-blur-md transition-all duration-700 [transform-style:preserve-3d] ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none [transform:rotateY(180deg)]'}`}>
                       <div className="flex justify-between items-start mb-6">
                         <div aria-hidden="true" />
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
                       </div>
 
-                      <div className="text-center mb-6 mt-2">
-                        <h4 className="text-white/60 font-medium text-xs mb-1 uppercase tracking-wider">
-                          您的 PERSONA · YOUR PERSONA
-                        </h4>
-                        <h2
-                          className={`text-3xl font-black font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-b ${currentPersonaConfig.themeGradient.replace('from-', 'from-white via-').replace('to-', 'to-white/80')}`}
-                        >
-                          {currentPersonaConfig.titleZh}
-                        </h2>
-                        <h3
-                          className={`text-[11px] uppercase tracking-[0.2em] mt-1 font-bold ${currentPersonaConfig.textColor}`}
-                        >
-                          {currentPersonaConfig.title}
-                        </h3>
-                      </div>
-
-                      <div className="mb-6 rounded-2xl border border-white/15 bg-black/20 p-3 backdrop-blur-lg">
+                      <div className="mb-4 rounded-2xl border border-white/15 bg-black/20 p-3 backdrop-blur-lg">
                         <div className="flex items-center gap-3">
                           <img
                             src={currentPersonaConfig.giftImage}
@@ -547,7 +532,6 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                           </span>
                         </div>
                       </div>
-                      <button type="button" onClick={() => setShowGift(false)} className="mt-4 text-[10px] text-white/60 underline">返回 Persona · Back</button>
                     </div>
                   </div>
 
