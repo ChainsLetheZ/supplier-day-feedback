@@ -208,7 +208,12 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
 
   return (
     <div className="bosch-ui flex flex-col w-full h-[100dvh] bg-slate-50 relative overflow-hidden text-slate-800 font-sans sm:py-6">
-      <div className="max-w-md mx-auto w-full h-full flex flex-col flex-1 relative bg-white sm:rounded-[32px] sm:shadow-2xl sm:border border-slate-200 overflow-hidden">
+      <img className="bosch-supergraphic" src="/brand/supergraphic-responsive.svg" alt="" aria-hidden="true" />
+      <header className="bosch-brand-header" aria-label="Bosch China Supplier Day">
+        <img className="bosch-brand-logo" src="/brand/bosch-logo.svg" alt="Bosch" />
+        <span className="bosch-brand-title">China Supplier Day 2026</span>
+      </header>
+      <div className="max-w-md mx-auto w-full min-h-0 flex flex-col flex-1 relative bg-white sm:rounded-[32px] sm:shadow-2xl sm:border border-slate-200 overflow-hidden">
         
         <div className="w-full h-full flex flex-col select-none text-slate-800">
           
