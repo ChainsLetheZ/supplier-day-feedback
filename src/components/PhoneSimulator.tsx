@@ -478,9 +478,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                     </div>
 
                     <button type="button" onClick={(event) => { event.stopPropagation(); setShowGift(true); }} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/70 transition-opacity duration-300 ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                      <span className="text-xs tracking-widest uppercase text-white/60">Your Persona</span>
+                      <span className="text-sm font-semibold text-white/85">感谢您的填写，您的专属人物画像是：<br /><span className="text-[11px] text-white/65">Thank you. Your persona is:</span></span>
                       <strong className="mt-3 text-4xl font-black">{currentPersonaConfig.titleZh}</strong>
                       <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
+                      <p className="mt-4 max-w-[18rem] text-[11px] leading-relaxed text-white/75">{currentPersonaConfig.description}</p>
                       {activeSubmission.name && <span className="mt-8 text-xs text-white/70">{activeSubmission.name}</span>}
                       {activeSubmission.id && <span className="mt-1 text-[10px] text-white/50">ID {activeSubmission.id.split('-')[1]?.substring(0, 6)}</span>}
                       <span className="mt-7 rounded-full border border-white/60 bg-white/15 px-5 py-2 text-xs font-bold tracking-wide shadow-lg">点击翻转查看礼物<br /><span className="text-[10px] font-normal">Tap to flip and reveal your gift</span></span>
