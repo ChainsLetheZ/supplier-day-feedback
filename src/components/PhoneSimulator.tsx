@@ -218,7 +218,10 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     <div className="bosch-ui flex flex-col w-full h-[100dvh] bg-slate-50 relative overflow-hidden text-slate-800 font-sans sm:py-6">
       <img className="bosch-supergraphic" src="/brand/supergraphic-responsive.svg" alt="" aria-hidden="true" />
       <header className="bosch-brand-header" aria-label="Bosch China Supplier Day">
-        <img className="bosch-brand-logo" src="/brand/bosch-logo.svg" alt="Bosch" />
+        <div className="bosch-brand-row">
+          <img className="bosch-brand-logo" src="/brand/bosch-logo.svg" alt="Bosch" />
+          <span className="bosch-brand-title">China Supplier Day 2026</span>
+        </div>
         <div className="bosch-progress" role="progressbar" aria-label="Questionnaire progress" aria-valuemin={0} aria-valuemax={5} aria-valuenow={Math.min(step, 5)}>
           <span className="bosch-progress-track"><span className="bosch-progress-fill" style={{ width: `${Math.min(step, 5) / 5 * 100}%` }} /></span>
         </div>
@@ -462,7 +465,8 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   className="flex flex-col flex-1 items-center justify-center py-4"
                 >
                   <div
-                    className={`w-full relative rounded-3xl overflow-hidden bg-slate-900 border-2 ${currentPersonaConfig.borderColor} ${currentPersonaConfig.glowColor} shadow-2xl transition-all duration-700`}
+                    className={`w-full max-w-sm mx-auto relative rounded-2xl overflow-hidden bg-slate-900 border-2 ${currentPersonaConfig.borderColor} ${currentPersonaConfig.glowColor} shadow-2xl transition-all duration-700`}
+                    style={{ perspective: '1000px' }}
                   >
                     <div className="absolute inset-0 opacity-40">
                       <div
@@ -472,14 +476,14 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <div className="absolute top-10 -left-10 w-32 h-32 bg-indigo-500 blur-[50px] rounded-full opacity-20"></div>
                     </div>
 
-                    <button type="button" onClick={() => setShowGift(true)} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/80 backdrop-blur-sm transition-opacity ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <button type="button" onClick={() => setShowGift(true)} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/80 backdrop-blur-sm transition-all duration-700 [transform-style:preserve-3d] ${showGift ? 'opacity-0 pointer-events-none [transform:rotateY(180deg)]' : 'opacity-100'}`}>
                       <span className="text-xs tracking-widest uppercase text-white/60">Your Persona</span>
                       <strong className="mt-3 text-4xl font-black">{currentPersonaConfig.titleZh}</strong>
                       <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
                       <span className="mt-8 text-xs text-white/60">{activeSubmission.name || '嘉宾 Guest'} · ID {activeSubmission.id?.split('-')[1]?.substring(0, 6) || '10293'}</span>
                       <span className="mt-6 text-[10px] text-white/50">点击查看礼物 · Tap to reveal gift</span>
                     </button>
-                    <div className={`relative z-10 p-5 flex flex-col h-full backdrop-blur-md transition-opacity ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    <div className={`relative z-10 p-5 flex flex-col h-full min-h-[25rem] backdrop-blur-md transition-all duration-700 [transform-style:preserve-3d] ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none [transform:rotateY(180deg)]'}`}>
                       <div className="flex justify-between items-start mb-6">
                         <div aria-hidden="true" />
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />

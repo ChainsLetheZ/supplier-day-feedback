@@ -41,11 +41,11 @@
 
 .bosch-brand-header {
   display: flex;
-  flex-direction: column;
   align-items: stretch;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 0;
   min-block-size: 4rem;
-  padding: 0.65rem 1rem 0.55rem;
+  padding: 0.55rem 1rem 0;
   background: #fff;
   border-block-end: 1px solid var(--bosch-line);
 }
@@ -56,12 +56,16 @@
   block-size: auto;
 }
 
+.bosch-brand-row { display: flex; align-items: center; gap: 1rem; min-block-size: 3.25rem; }
+.bosch-brand-title { color: var(--bosch-graphite); font-size: 1rem; line-height: 1.5; font-weight: 700; letter-spacing: 0.01em; }
+
 .bosch-progress { inline-size: 100%; }
 .bosch-progress-track { display: block; inline-size: 100%; block-size: 0.25rem; background: #e6e6e6; overflow: hidden; }
 .bosch-progress-fill { display: block; block-size: 100%; background: var(--bosch-action); transition: width 0.25s ease; }
 
 /* The progress rule sits directly beneath the logo and runs edge to edge. */
-.bosch-brand-header .bosch-progress { inline-size: calc(100% + 2rem); margin-inline: -1rem; }
+.bosch-brand-header .bosch-progress { inline-size: calc(100% + 2rem); margin: 0 -1rem; }
+.bosch-brand-header .bosch-progress-track { block-size: 0.375rem; background: transparent; }
 
 .bosch-ui .bg-white {
   background-color: #fff;
