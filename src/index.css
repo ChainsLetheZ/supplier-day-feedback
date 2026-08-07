@@ -60,6 +60,9 @@
 .bosch-progress-track { display: block; inline-size: 100%; block-size: 0.25rem; background: #e6e6e6; overflow: hidden; }
 .bosch-progress-fill { display: block; block-size: 100%; background: var(--bosch-action); transition: width 0.25s ease; }
 
+/* The progress rule sits directly beneath the logo and runs edge to edge. */
+.bosch-brand-header .bosch-progress { inline-size: calc(100% + 2rem); margin-inline: -1rem; }
+
 .bosch-ui .bg-white {
   background-color: #fff;
 }

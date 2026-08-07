@@ -557,9 +557,9 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
             </AnimatePresence>
           </div>
 
-          {/* Sticky Bottom Navigation Bar (Hidden on completion step) */}
+          {/* Fixed navigation area; the questionnaire content above owns all scrolling. */}
           {step < 6 && (
-            <div className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-slate-200/60 p-4 sm:pb-6 z-40">
+            <div className="shrink-0 w-full bg-white border-t border-slate-200/60 p-4 sm:pb-6 z-40">
               <div className="flex gap-3 max-w-sm mx-auto">
                 {step > 1 && (
                   <button 
