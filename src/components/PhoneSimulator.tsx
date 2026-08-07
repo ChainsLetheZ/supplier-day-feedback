@@ -220,7 +220,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
       <header className="bosch-brand-header" aria-label="Bosch China Supplier Day">
         <div className="bosch-brand-row">
           <img className="bosch-brand-logo" src="/brand/bosch-logo.svg" alt="Bosch" />
-          <span className="bosch-brand-title">China Supplier Day 2026</span>
+          <span className="bosch-brand-title">Bosch China Supplier Day 2026</span>
         </div>
         <div className="bosch-progress" role="progressbar" aria-label="Questionnaire progress" aria-valuemin={0} aria-valuemax={5} aria-valuenow={Math.min(step, 5)}>
           <span className="bosch-progress-track"><span className="bosch-progress-fill" style={{ width: `${Math.min(step, 5) / 5 * 100}%` }} /></span>
