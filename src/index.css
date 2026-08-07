@@ -20,6 +20,85 @@
   }
 }
 
+/* Bosch Corporate Design treatment for the attendee questionnaire. */
+.bosch-ui {
+  --bosch-red: #e20015;
+  --bosch-red-dark: #b40012;
+  --bosch-action: #007bc0;
+  --bosch-action-dark: #005f93;
+  --bosch-graphite: #252525;
+  --bosch-paper: #f4f4f4;
+  --bosch-line: #d6d6d6;
+  font-family: Arial, "Helvetica Neue", sans-serif;
+  background: var(--bosch-paper);
+}
+
+.bosch-ui .bg-white {
+  background-color: #fff;
+}
+
+.bosch-ui .bg-indigo-600,
+.bosch-ui .bg-indigo-700 {
+  background-color: var(--bosch-action);
+}
+
+.bosch-ui .hover\:bg-indigo-700:hover {
+  background-color: var(--bosch-action-dark);
+}
+
+.bosch-ui .text-indigo-600,
+.bosch-ui .text-indigo-700 {
+  color: var(--bosch-action);
+}
+
+.bosch-ui .border-indigo-400,
+.bosch-ui .border-indigo-500,
+.bosch-ui .border-indigo-600 {
+  border-color: var(--bosch-action);
+}
+
+.bosch-ui .bg-indigo-50 {
+  background-color: #eef7fb;
+}
+
+.bosch-ui .ring-indigo-500\/50:focus,
+.bosch-ui .focus\:ring-indigo-500\/50:focus {
+  --tw-ring-color: rgb(0 123 192 / 0.35);
+}
+
+.bosch-ui .shadow-indigo-200 {
+  --tw-shadow-color: rgb(0 123 192 / 0.22);
+}
+
+.bosch-ui .rounded-xl,
+.bosch-ui .rounded-2xl {
+  border-radius: 0.5rem;
+}
+
+.bosch-ui .rounded-3xl {
+  border-radius: 0.75rem;
+}
+
+.bosch-ui input,
+.bosch-ui textarea,
+.bosch-ui select {
+  border-color: var(--bosch-line);
+  border-radius: 0.5rem;
+}
+
+.bosch-ui input:focus,
+.bosch-ui textarea:focus,
+.bosch-ui select:focus {
+  border-color: var(--bosch-action);
+  outline: 2px solid rgb(0 123 192 / 0.16);
+  outline-offset: 1px;
+}
+
+.bosch-ui button:focus-visible {
+  outline: 2px solid var(--bosch-action);
+  outline-offset: 2px;
+}
+
 /* Custom animation gradients or effects */
 @keyframes pulseGlow {
   0%, 100% {

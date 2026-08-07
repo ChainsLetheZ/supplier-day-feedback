@@ -207,7 +207,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const currentPersonaConfig = activeSubmission ? PERSONA_DETAILS[activeSubmission.persona] : null;
 
   return (
-    <div className="flex flex-col w-full h-[100dvh] bg-slate-50 relative overflow-hidden text-slate-800 font-sans sm:py-6">
+    <div className="bosch-ui flex flex-col w-full h-[100dvh] bg-slate-50 relative overflow-hidden text-slate-800 font-sans sm:py-6">
       <div className="max-w-md mx-auto w-full h-full flex flex-col flex-1 relative bg-white sm:rounded-[32px] sm:shadow-2xl sm:border border-slate-200 overflow-hidden">
         
         <div className="w-full h-full flex flex-col select-none text-slate-800">
