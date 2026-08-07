@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Award, ChevronRight, Check, RefreshCw, Star
@@ -46,6 +46,13 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const [q5OtherText, setQ5OtherText] = useState('');
   const [q6Suggestions, setQ6Suggestions] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [showGift, setShowGift] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    if (step !== 7) setShowGift(false);
+  }, [step]);
 
   // If parent later hydrates a ticket while we are idle on home, show result.
   // Never interrupt an in-progress form (steps 2–5) or waiting (step 6).
@@ -118,6 +125,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const handleSubmit = async () => {
     if (q2Rating === 0 || submitting) return;
     setSubmitting(true);
+    setShowGift(false);
     // Stay on waiting screen — do NOT jump back to step 1
     setStep(6);
 
@@ -219,7 +227,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
         
         <div className="w-full h-full min-h-0 flex flex-col select-none text-slate-800">
           
-          <div className="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col pb-24">
+          <div ref={contentRef} className="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col pb-24">
             <AnimatePresence mode="wait">
               
               {/* STEP 1: Basic Info */}
@@ -464,7 +472,14 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       <div className="absolute top-10 -left-10 w-32 h-32 bg-indigo-500 blur-[50px] rounded-full opacity-20"></div>
                     </div>
 
-                    <div className="relative z-10 p-5 flex flex-col h-full backdrop-blur-md">
+                    <button type="button" onClick={() => setShowGift(true)} className={`absolute inset-0 z-20 p-6 text-center flex flex-col items-center justify-center text-white bg-slate-900/80 backdrop-blur-sm transition-opacity ${showGift ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                      <span className="text-xs tracking-widest uppercase text-white/60">Your Persona</span>
+                      <strong className="mt-3 text-4xl font-black">{currentPersonaConfig.titleZh}</strong>
+                      <span className={`mt-1 text-sm font-bold uppercase tracking-[0.2em] ${currentPersonaConfig.textColor}`}>{currentPersonaConfig.title}</span>
+                      <span className="mt-8 text-xs text-white/60">{activeSubmission.name || '嘉宾 Guest'} · ID {activeSubmission.id?.split('-')[1]?.substring(0, 6) || '10293'}</span>
+                      <span className="mt-6 text-[10px] text-white/50">点击查看礼物 · Tap to reveal gift</span>
+                    </button>
+                    <div className={`relative z-10 p-5 flex flex-col h-full backdrop-blur-md transition-opacity ${showGift ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                       <div className="flex justify-between items-start mb-6">
                         <div aria-hidden="true" />
                         <Award className={`w-6 h-6 ${currentPersonaConfig.textColor}`} />
@@ -528,6 +543,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                           </span>
                         </div>
                       </div>
+                      <button type="button" onClick={() => setShowGift(false)} className="mt-4 text-[10px] text-white/60 underline">返回 Persona · Back</button>
                     </div>
                   </div>
 
