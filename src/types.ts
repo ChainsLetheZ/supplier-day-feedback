@@ -163,17 +163,17 @@ export const Q2_Q4_OPTIONS = [
   { key: 'A', labelEn: 'Keynote Speech', labelZh: 'Keynote Speech' },
   { key: 'B', labelEn: 'Panel Discussion', labelZh: 'Panel Discussion' },
   { key: 'C', labelEn: 'Marketplace', labelZh: 'Marketplace' },
-  { key: 'D', labelEn: 'Business Unit Individual Supplier Meeting', labelZh: '事业部单独供应商会议' }
+  { key: 'D', labelEn: 'GB Individual Supplier Meeting', labelZh: '事业部单独供应商会议' }
 ];
 
 export const Q5_OPTIONS = [
-  { key: 'A', labelEn: 'Procurement Strategy', labelZh: '更具体的 Bosch 采购战略和品类方向' },
-  { key: 'B', labelEn: 'New Tech & Products', labelZh: '更多新技术、新产品、新业务场景展示' },
-  { key: 'C', labelEn: 'Best Practices', labelZh: '更多供应商成功案例或最佳实践分享' },
-  { key: 'D', labelEn: '1-on-1 Matching', labelZh: '更多一对一业务对接机会' },
-  { key: 'E', labelEn: 'Tech Workshops', labelZh: '更多技术 Workshop 或专题讨论' },
-  { key: 'F', labelEn: 'Quality & Compliance', labelZh: '更多关于质量、合规、可持续发展的要求说明' },
-  { key: 'G', labelEn: 'Digital Tools', labelZh: '更多数字化平台、流程、工具的实操介绍' },
-  { key: 'H', labelEn: 'Cross-region Exchange', labelZh: '更多跨区域、跨业务部门的交流机会' },
-  { key: 'I', labelEn: 'Other', labelZh: '其他，请注明' }
+  { key: 'A', labelEn: 'More specific Bosch procurement strategy and category directions', labelZh: '更具体的 Bosch 采购战略和品类方向' },
+  { key: 'B', labelEn: 'More showcases of new technologies, new products, and new business scenarios', labelZh: '更多新技术、新产品、新业务场景展示' },
+  { key: 'C', labelEn: 'More supplier success stories and best practice sharing', labelZh: '更多供应商成功案例或最佳实践分享' },
+  { key: 'D', labelEn: 'More opportunities for one-on-one business matching', labelZh: '更多一对一业务对接机会' },
+  { key: 'E', labelEn: 'More technical workshops or topic-focused discussions', labelZh: '更多技术 Workshop 或专题讨论' },
+  { key: 'F', labelEn: 'More guidance on quality, compliance, and sustainability requirements', labelZh: '更多关于质量、合规、可持续发展的要求说明' },
+  { key: 'G', labelEn: 'More hands-on introductions to digital platforms, processes, and tools', labelZh: '更多数字化平台、流程、工具的实操介绍' },
+  { key: 'H', labelEn: 'More opportunities for cross-region and cross-business-unit exchange', labelZh: '更多跨区域、跨业务部门的交流机会' },
+  { key: 'I', labelEn: 'Other, please specify', labelZh: '其他，请注明' }
 ];

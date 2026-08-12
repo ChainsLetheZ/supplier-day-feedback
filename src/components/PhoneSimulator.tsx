@@ -353,7 +353,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       { key: 'panelDiscussion', labelZh: '圆桌讨论', labelEn: 'Panel Discussion' },
                       { key: 'marketplace', labelZh: '市集展示', labelEn: 'Marketplace' },
                       { key: 'awardingCeremony', labelZh: '颁奖典礼', labelEn: 'Awarding Ceremony' },
-                      { key: 'supplierMeeting', labelZh: '事业部单独供应商会议', labelEn: 'Business Unit Individual Supplier Meeting' }
+                      { key: 'supplierMeeting', labelZh: '事业部单独供应商会议', labelEn: 'GB Individual Supplier Meeting' }
                     ].map((item) => (
                       <div key={item.key} className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
                         <div className="mb-2">
@@ -390,7 +390,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                   <div className="space-y-5 flex-1 flex flex-col">
                     <div className="flex-1 flex flex-col">
                       <div className="flex justify-between items-end mb-1">
-                        <label className="block text-[12px] font-bold text-slate-800">4. 您希望明年的供应商大会增加哪些内容？<br/>What are your other suggestions and recommendations for improvement?</label>
+                        <label className="block text-[12px] font-bold text-slate-800">4. 您希望明年的供应商大会增加哪些内容？<br/>What would you like to see more next year?</label>
                         <span className="text-[10px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full shrink-0">最多3项 Max 3</span>
                       </div>
                       <p className="text-[10px] text-slate-500 mb-3 animate-pulse font-bold text-center">👇 请上下滑动查看全部选项 Please scroll to see all options 👇</p>
