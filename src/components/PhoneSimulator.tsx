@@ -353,7 +353,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       { key: 'panelDiscussion', labelZh: '圆桌讨论', labelEn: 'Panel Discussion' },
                       { key: 'marketplace', labelZh: '市集展示', labelEn: 'Marketplace' },
                       { key: 'awardingCeremony', labelZh: '颁奖典礼', labelEn: 'Awarding Ceremony' },
-                      { key: 'supplierMeeting', labelZh: '事业部单独供应商会议', labelEn: 'GB Individual Supplier Meeting' }
+                      { key: 'supplierMeeting', labelZh: '事业部采购分会场', labelEn: 'GB Individual Supplier Meeting' }
                     ].map((item) => (
                       <div key={item.key} className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
                         <div className="mb-2">

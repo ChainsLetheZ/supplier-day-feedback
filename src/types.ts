@@ -163,7 +163,7 @@ export const Q2_Q4_OPTIONS = [
   { key: 'A', labelEn: 'Keynote Speech', labelZh: 'Keynote Speech' },
   { key: 'B', labelEn: 'Panel Discussion', labelZh: 'Panel Discussion' },
   { key: 'C', labelEn: 'Marketplace', labelZh: 'Marketplace' },
-  { key: 'D', labelEn: 'GB Individual Supplier Meeting', labelZh: '事业部单独供应商会议' }
+  { key: 'D', labelEn: 'GB Individual Supplier Meeting', labelZh: '事业部采购分会场' }
 ];
 
 export const Q5_OPTIONS = [
