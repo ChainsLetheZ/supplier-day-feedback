@@ -23,6 +23,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(() =>
     loadMySubmission() ? 7 : 1
   );
+  const [hasStarted, setHasStarted] = useState(() => !!loadMySubmission());
   const participantType: ParticipantType = 'SUPPLIER';
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -60,9 +61,18 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     if (!lastSubmission) return;
     if (step === 1 || step === 7) {
       setLocalSubmission(lastSubmission);
-      if (step === 1) setStep(7);
+      if (step === 1) {
+        setHasStarted(true);
+        setStep(7);
+      }
     }
   }, [lastSubmission]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleStartSurvey = () => {
+    setHasStarted(true);
+    setSurveyStartedAt(new Date().toISOString());
+    contentRef.current?.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  };
 
   const handleRandomizeInputs = () => {
     const isChinese = Math.random() > 0.4;
@@ -206,6 +216,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     setQ6Suggestions('');
     setLocalSubmission(null);
     setSubmitting(false);
+    setHasStarted(false);
     setStep(1);
     onResetDemo();
   };
@@ -221,8 +232,8 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
           <img className="bosch-brand-logo" src="/brand/bosch-logo.svg" alt="Bosch" />
           <span className="bosch-brand-title">Bosch China Supplier Day 2026</span>
         </div>
-        <div className="bosch-progress" role="progressbar" aria-label="Questionnaire progress" aria-valuemin={0} aria-valuemax={5} aria-valuenow={Math.min(step, 5)}>
-          <span className="bosch-progress-track"><span className="bosch-progress-fill" style={{ width: `${Math.min(step, 5) / 5 * 100}%` }} /></span>
+        <div className="bosch-progress" role="progressbar" aria-label="Questionnaire progress" aria-valuemin={0} aria-valuemax={5} aria-valuenow={hasStarted ? Math.min(step, 5) : 0}>
+          <span className="bosch-progress-track"><span className="bosch-progress-fill" style={{ width: `${(hasStarted ? Math.min(step, 5) : 0) / 5 * 100}%` }} /></span>
         </div>
       </header>
       <div className="max-w-md mx-auto w-full min-h-0 flex flex-col flex-1 relative bg-white sm:rounded-[32px] sm:shadow-2xl sm:border border-slate-200 overflow-hidden">
@@ -232,10 +243,13 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
           <div ref={contentRef} className="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col pb-24">
             <AnimatePresence mode="wait">
               
-              {/* STEP 1: Welcome & Contact Info */}
-              {step === 1 && (
-                <motion.div key="step-1" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
-                  <div className="mb-6 space-y-4 text-[12px] leading-relaxed text-slate-600">
+              {/* START PAGE: Welcome */}
+              {!hasStarted && step === 1 && (
+                <motion.div key="welcome" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
+                  <div className="mb-6">
+                    <h2 className="text-[22px] font-bold text-slate-900 leading-tight">欢迎参加<br /><span className="text-[18px]">Welcome</span></h2>
+                  </div>
+                  <div className="space-y-4 text-[12px] leading-relaxed text-slate-600">
                     <p>
                       感谢您参加本次 Bosch 供应商大会，并与我们共同交流未来合作的方向与机会。<br />
                       Thank you for joining this Bosch Supplier Day and exploring future directions and opportunities for collaboration with us.
@@ -248,12 +262,18 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                       本问卷预计用时 3–5 分钟。完成后，您将获得专属的 Bosch Supplier Persona 结果。<br />
                       The survey takes approximately 3–5 minutes. Upon completion, you will receive your personalized Bosch Supplier Persona result.
                     </p>
-                    <p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* STEP 1: Contact Details */}
+              {hasStarted && step === 1 && (
+                <motion.div key="step-1" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
+                  <div className="space-y-4">
+                    <div className="mb-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-[11px] leading-relaxed text-slate-500">
                       如您愿意留下姓名和联系方式，我们将有机会基于您的反馈提供更有针对性的后续沟通、资料分享或合作对接。<br />
                       If you choose to leave your name and contact details, we may follow up with more tailored communication, information sharing, or collaboration opportunities based on your feedback.
-                    </p>
-                  </div>
-                  <div className="space-y-4">
+                    </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company <span className="text-rose-500">* 必填 Required</span></label>
                       <input id="basic-company" type="text" value={company} onChange={(e) => { setCompany(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, company: undefined })); }} aria-invalid={!!basicInfoErrors.company} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.company ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的公司名称 Your company" />
@@ -552,9 +572,23 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
           </div>
 
           {/* Fixed navigation area; the questionnaire content above owns all scrolling. */}
-          {step < 6 && (
+          {(!hasStarted || step < 6) && (
             <div className="shrink-0 w-full bg-white border-t border-slate-200/60 p-4 sm:pb-6 z-40">
               <div className="flex gap-3 max-w-sm mx-auto">
+                {!hasStarted ? (
+                  <button
+                    type="button"
+                    onClick={handleStartSurvey}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-indigo-600 text-white font-bold text-sm shadow-md shadow-indigo-200 hover:bg-indigo-700 transition-colors leading-tight"
+                  >
+                    <div className="flex flex-col items-center">
+                      <span>开始填写</span>
+                      <span className="text-[10px]">Start survey</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <>
                 {step > 1 && (
                   <button 
                     onClick={handlePrevStep}
@@ -590,6 +624,8 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         <Award className="w-4 h-4" /> 提交 Submit </span>
                     )}
                   </button>
+                )}
+                  </>
                 )}
               </div>
             </div>
