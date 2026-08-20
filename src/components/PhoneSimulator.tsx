@@ -15,7 +15,7 @@ interface PhoneSimulatorProps {
 }
 
 type BasicInfoErrors = Partial<
-  Record<'participantType' | 'email' | 'businessUnit' | 'otherBusinessUnit', string>
+  Record<'company' | 'email' | 'businessUnit' | 'otherBusinessUnit', string>
 >;
 
 export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onResetDemo }: PhoneSimulatorProps) {
@@ -23,7 +23,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(() =>
     loadMySubmission() ? 7 : 1
   );
-  const [participantType, setParticipantType] = useState<ParticipantType | ''>('');
+  const participantType: ParticipantType = 'SUPPLIER';
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
@@ -79,15 +79,15 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
     setName(fallbackName);
     setEmail(`${fallbackName.replace(/\s+/g, '.').toLowerCase()}@example.com`);
     setCompany(MOCK_COMPANIES[Math.floor(Math.random() * MOCK_COMPANIES.length)]);
-    setParticipantType(Math.random() > 0.5 ? 'BOSCH' : 'SUPPLIER');
     setBusinessUnit(BU_OPTIONS[Math.floor(Math.random() * BU_OPTIONS.length)]);
   };
 
   const handleNextStep = () => {
     if (step === 1) {
       const errors: BasicInfoErrors = {};
+      const normalizedCompany = company.trim();
       const normalizedEmail = email.trim();
-      if (!participantType) errors.participantType = '请选择您的身份 Please select your participant type';
+      if (!normalizedCompany) errors.company = '请输入公司名称 Please enter your company';
       if (normalizedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
         errors.email = '邮箱格式不正确 Please enter a valid email address';
       }
@@ -144,7 +144,7 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
 
     const submission: FeedbackSubmission = {
       id: `attendee-${Date.now()}`,
-      participantType: participantType as ParticipantType,
+      participantType,
       name: name.trim(),
       email: email.trim(),
       company: company.trim(),
@@ -184,7 +184,6 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
   };
 
   const startNewSurvey = () => {
-    setParticipantType('');
     setName('');
     setEmail('');
     setCompany('');
@@ -233,27 +232,32 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
           <div ref={contentRef} className="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col pb-24">
             <AnimatePresence mode="wait">
               
-              {/* STEP 1: Basic Info */}
+              {/* STEP 1: Welcome & Contact Info */}
               {step === 1 && (
                 <motion.div key="step-1" initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }} className="flex flex-col flex-1">
-                  <div className="mb-6">
-                    <h2 className="text-[20px] font-bold text-slate-900 mb-1 leading-tight">基本信息 Basic Info</h2>
-                    <p className="text-xs text-slate-500">感谢参加 Bosch 中国区供应商大会。<br/>Thank you for attending the Bosch China Supplier Day.</p>
+                  <div className="mb-6 space-y-4 text-[12px] leading-relaxed text-slate-600">
+                    <p>
+                      感谢您参加本次 Bosch 供应商大会，并与我们共同交流未来合作的方向与机会。<br />
+                      Thank you for joining this Bosch Supplier Day and exploring future directions and opportunities for collaboration with us.
+                    </p>
+                    <p>
+                      为了更好地了解供应商伙伴的参会体验和未来期待，我们诚挚邀请您填写本问卷。您的反馈将帮助我们评估本次大会的内容设置、展区安排、交流形式和会后跟进机制，并为明年供应商大会的优化提供重要参考。<br />
+                      To better understand our supplier partners’ event experience and future expectations, we sincerely invite you to complete this survey. Your feedback will help us evaluate the event content, exhibition arrangements, engagement formats, and post-event follow-up, and will provide important input for improving next year’s Supplier Day.
+                    </p>
+                    <p>
+                      本问卷预计用时 3–5 分钟。完成后，您将获得专属的 Bosch Supplier Persona 结果。<br />
+                      The survey takes approximately 3–5 minutes. Upon completion, you will receive your personalized Bosch Supplier Persona result.
+                    </p>
+                    <p>
+                      如您愿意留下姓名和联系方式，我们将有机会基于您的反馈提供更有针对性的后续沟通、资料分享或合作对接。<br />
+                      If you choose to leave your name and contact details, we may follow up with more tailored communication, information sharing, or collaboration opportunities based on your feedback.
+                    </p>
                   </div>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">身份 Participant Type <span className="text-rose-500">* 必填 Required</span></label>
-                      <div id="basic-participantType" tabIndex={-1} className={`grid grid-cols-2 gap-2 rounded-xl ${basicInfoErrors.participantType ? 'ring-2 ring-rose-500/30' : ''}`}>
-                        {([
-                          { value: 'BOSCH', zh: '博世', en: 'Bosch' },
-                          { value: 'SUPPLIER', zh: '供应商', en: 'Supplier' },
-                        ] as const).map((option) => (
-                          <button key={option.value} type="button" onClick={() => { setParticipantType(option.value); setBasicInfoErrors((prev) => ({ ...prev, participantType: undefined })); }} className={`px-4 py-3 rounded-xl border text-sm font-semibold transition-colors ${participantType === option.value ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'bg-white border-slate-200 text-slate-700'}`}>
-                            {option.zh}<span className="block text-[10px] font-medium mt-0.5">{option.en}</span>
-                          </button>
-                        ))}
-                      </div>
-                      {basicInfoErrors.participantType && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.participantType}</p>}
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company <span className="text-rose-500">* 必填 Required</span></label>
+                      <input id="basic-company" type="text" value={company} onChange={(e) => { setCompany(e.target.value); setBasicInfoErrors((prev) => ({ ...prev, company: undefined })); }} aria-invalid={!!basicInfoErrors.company} className={`w-full px-4 py-3 bg-white border rounded-xl text-base focus:outline-none focus:ring-2 transition-shadow ${basicInfoErrors.company ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-200 focus:ring-indigo-500/50'}`} placeholder="您的公司名称 Your company" />
+                      {basicInfoErrors.company && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.company}</p>}
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">您归属的事业部 Business Unit <span className="text-rose-500">* 必填 Required</span></label>
@@ -274,10 +278,6 @@ export default function PhoneSimulator({ onSubmitFeedback, lastSubmission, onRes
                         />
                       )}
                       {basicInfoErrors.otherBusinessUnit && <p className="mt-1.5 text-xs font-medium text-rose-600">{basicInfoErrors.otherBusinessUnit}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">公司 Company <span className="text-slate-400">选填 Optional</span></label>
-                      <input id="basic-company" type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-shadow" placeholder="您的公司名称 Your company" />
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">姓名 Name <span className="text-slate-400">选填 Optional</span></label>
